@@ -1,0 +1,144 @@
+<!-- pc css -->
+<div class="advantechCommonSwitchPanel" ng-show="ctrl.isPc">
+  <div class="gf-form" style="align-items: center;flex-wrap:wrap">
+    <div class="fontClass" ng-hide="ctrl.panel.commonTitle === ''"
+      style="font-size: {{ctrl.fontSizeData}};color:{{ctrl.fontColorData}};">
+      {{ctrl.panel.commonTitle}}
+    </div>
+    <!--    <img src="img/img-title-bar-div.svg" class="common-switch-img-style"/> -->
+    <div class="common-devide-image-style"></div>
+    <div id="selectGroups" style="position: relative;" class="variable-options-wrapper-common-switch" ng-show="ctrl.normalVarArrayData.length>0">
+      <div class='common-switch-input-value-style' ng-style='ctrl.borderStyle' ng-click="ctrl.showDropDown()"
+        contenteditable="true">
+        <span ng-class="{true:'commonSwitchImgInBlueStyle',false:'commonSwitchImgStyle'}[ctrl.showFlag]"></span>
+        <span ng-style='ctrl.fontColorStyle' class='common-switch-show-font'
+          title='{{ctrl.selectedItems}}'>{{ctrl.selectedItems}}</span>
+          <div  ng-class="{true:'up-and-down-common-switch-style-active',false:'up-and-down-common-switch-style'}[ctrl.showFlag]">
+            <div ng-class="{true:'button-up-and-down-common-switch-style-active',false:'button-up-and-down-common-switch-style'}[ctrl.showFlag]"></div>
+          </div>
+      </div>
+      <div id="dropdownList1" class="variable-value-dropdown-common-switch-in" style="top:40px;" ng-if='ctrl.showFlag' tabindex="1">
+        <div style="width:332px" class="common-switch-angular-panel-varibale-body">
+          <div class="variable-options-column">
+            <div ng-repeat="variable in ctrl.normalVarArrayData" class="submenu-item gf-form-inline"
+              style="flex-direction: column;margin-right:0px;" ng-value="ctrl.countOnlyone()">
+              <label class="gf-form-label template-variable variable-item-style common-switch-label">
+                {{variable.label || variable.name}}
+              </label>
+              <value-select-dropdown
+                ng-if="variable.type !== 'adhoc' && !ctrl.refreshButton && variable.type !== 'textbox'"
+                variable="variable" on-updated="ctrl.variableUpdated(variable,true)" specialprop="ctrl.commonSwitch">
+              </value-select-dropdown>
+            </div>
+            <input type="text" ng-if="variable.type === 'textbox'" ng-model="variable.query"
+              class="gf-form-input width-12"
+              ng-blur="variable.current.value != variable.query && variable.updateOptions() && ctrl.variableUpdated(variable);"
+              ng-keydown="$event.keyCode === 13 && variable.current.value != variable.query && variable.updateOptions() && ctrl.variableUpdated(variable);"></input>
+            <ad-hoc-filters ng-if="variable.type === 'adhoc'" variable="variable" dashboard="ctrl.dashboard">
+            </ad-hoc-filters>
+          </div>
+        </div>
+        <div class="common-switch-botton-style">
+          <button type="button" class="common-switch-filter-button-style" ng-click="ctrl.clearFilterFun()"
+            data-placement="bottom">Clear all filters</button>
+          <button type="button" style="float:right;" class="common-switch-ok-button-style"
+            ng-click="ctrl.totalFun()">Submit</button>
+          <button type="button" style="float:right;margin-right:20px;" class="common-switch-cancel-button-style"
+            ng-click="ctrl.totalFun()">Cancel</button>
+        </div>
+      </div>
+    </div>
+
+    <div ng-show='ctrl.panel.timeRangeEnable' style="margin-left:12px;">
+      <div class="common-switch-time-picker-style-mobile" ng-show='ctrl.panel.timeMode==="Default TimeRange"'>
+        <time-picker value='ctrl.timeValue'  hideZoomBtn=true selectOptions='ctrl.setActiveTimeOption()'
+          timeZone='ctrl.timeZoneData' customTimePicker='ctrl.customTimePickerData' icon="gicon-common-switch-date-style"
+          iconClassName="'gicon-common-switch-date-style'" onchange="ctrl.onChangeTimePicker.bind(ctrl)"></time-picker>
+      </div>
+      <div ng-hide='ctrl.panel.timeMode==="Default TimeRange"' class="common-switch-div-custom-time-range-style">
+        <i style="font-size:20px;padding-left:4px;"
+          class='gicon-common-switch-date-style common-switch-i-props'></i>
+        <select class="gf-form-input width-11 common-switch-special-class-for-option"
+          style="outline:none;padding: 0px 8px 0px 0px;display:inline;font-size: 20px;border:none;"
+          ng-model="ctrl.panel.trueTime" ng-options="f for f in ctrl.timeSelectedArr"
+          ng-click='ctrl.handleYearChanged();' ng-change="ctrl.handleTrueTimeChanged();ctrl.onRender()"></select>
+      </div>
+    </div>
+    <div style='position: relative;flex-grow: 1;justify-content: flex-end;' class='commonSwitchTime' ng-hide="ctrl.timeData ===''">
+      <div style="position:absolute;right:12px;">
+        <div>Last Updated Time</div>
+        <div>{{ctrl.timeData}}</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- no pc css -->
+<div ng-hide="ctrl.isPc">
+    <div class="fontClass" ng-hide="ctrl.panel.commonTitle === ''"
+      style="font-size: {{ctrl.fontSizeData}};color:{{ctrl.fontColorData}};">
+      {{ctrl.panel.commonTitle}}
+    </div>
+    <div id="selectGroups" style="position: relative;" class="variable-options-wrapper-common-switch" ng-show="ctrl.normalVarArrayData.length>0">
+      <div class='common-switch-input-value-style' ng-style='ctrl.borderStyle' ng-click="ctrl.showDropDown()"
+        contenteditable="true">
+        <span ng-class="{true:'commonSwitchImgInBlueStyle',false:'commonSwitchImgStyle'}[ctrl.showFlag]"></span>
+        <span ng-style='ctrl.fontColorStyle' class='common-switch-show-font'
+          title='{{ctrl.selectedItems}}'>{{ctrl.selectedItems}}</span>
+          <div  ng-class="{true:'up-and-down-common-switch-style-active',false:'up-and-down-common-switch-style'}[ctrl.showFlag]">
+            <div ng-class="{true:'button-up-and-down-common-switch-style-active',false:'button-up-and-down-common-switch-style'}[ctrl.showFlag]"></div>
+          </div> 
+      </div>
+      <div id="dropdownList1" class="variable-value-dropdown-common-switch-in" style="top:40px;" ng-if='ctrl.showFlag' tabindex="1">
+        <div style="width:332px" class="common-switch-angular-panel-varibale-body">
+          <div class="variable-options-column">
+            <div ng-repeat="variable in ctrl.normalVarArrayData" class="submenu-item gf-form-inline"
+              style="flex-direction: column;margin-right:0px;" ng-value="ctrl.countOnlyone()">
+              <label class="gf-form-label template-variable variable-item-style common-switch-label">
+                {{variable.label || variable.name}}
+              </label>
+              <value-select-dropdown
+                ng-if="variable.type !== 'adhoc' && !ctrl.refreshButton && variable.type !== 'textbox'"
+                variable="variable" on-updated="ctrl.variableUpdated(variable,true)" specialprop="ctrl.commonSwitch">
+              </value-select-dropdown>
+            </div>
+            <input type="text" ng-if="variable.type === 'textbox'" ng-model="variable.query"
+              class="gf-form-input width-12"
+              ng-blur="variable.current.value != variable.query && variable.updateOptions() && ctrl.variableUpdated(variable);"
+              ng-keydown="$event.keyCode === 13 && variable.current.value != variable.query && variable.updateOptions() && ctrl.variableUpdated(variable);"></input>
+            <ad-hoc-filters ng-if="variable.type === 'adhoc'" variable="variable" dashboard="ctrl.dashboard">
+            </ad-hoc-filters>
+          </div>
+        </div>
+        <div class="common-switch-botton-style">
+          <button type="button" class="common-switch-filter-button-style" ng-click="ctrl.clearFilterFun()"
+            data-placement="bottom">Clear all filters</button>
+          <button type="button" style="float:right;" class="common-switch-ok-button-style"
+            ng-click="ctrl.totalFun()">Submit</button>
+          <button type="button" style="float:right;margin-right:20px;" class="common-switch-cancel-button-style"
+            ng-click="ctrl.totalFun()">Cancel</button>
+        </div>
+      </div>
+    </div>
+    <div class="gf-form" style="align-items: center;flex-wrap:wrap">
+    <div ng-show='ctrl.panel.timeRangeEnable' style="margin-right:8px">
+      <div class="common-switch-time-picker-style-mobile" ng-show='ctrl.panel.timeMode==="Default TimeRange"'>
+        <time-picker value='ctrl.timeValue'  hideZoomBtn=true selectOptions='ctrl.setActiveTimeOption()'
+          timeZone='ctrl.timeZoneData' customTimePicker='ctrl.customTimePickerData' iconClass='gicon-common-switch-date-style'
+          onchange="ctrl.onChangeTimePicker.bind(ctrl)"></time-picker>
+      </div>
+      <div ng-hide='ctrl.panel.timeMode==="Default TimeRange"' class="common-switch-div-custom-time-range-style">
+        <i style="font-size:20px;padding-left:4px;"
+          class='gicon-common-switch-date-style common-switch-i-props'></i>
+        <select class="gf-form-input width-11 common-switch-special-class-for-option"
+          style="outline:none;padding: 0px 8px 0px 0px;display:inline;font-size: 20px;border:none;"
+          ng-model="ctrl.panel.trueTime" ng-options="f for f in ctrl.timeSelectedArr"
+          ng-click='ctrl.handleYearChanged();' ng-change="ctrl.handleTrueTimeChanged();ctrl.onRender()"></select>
+      </div>
+    </div>
+    <div style='position: relative;flex-grow: 1;justify-content: flex-end;' class='commonSwitchTime' ng-hide="ctrl.timeData ===''">
+        <div>Last Updated Time</div>
+        <div>{{ctrl.timeData}}</div>
+    </div>
+  </div>
+</div>

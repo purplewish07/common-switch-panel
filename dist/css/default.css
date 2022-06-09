@@ -1,0 +1,305 @@
+.fontClass {
+  display: inline-block;
+  margin: 5px 12px 7px 0;
+  font-family: MicrosoftJhengHei;
+  font-weight: bold;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 1.17;
+  letter-spacing: normal;
+  display: inline-block;
+  width: 376px;
+}
+
+.common-switch-filter-button-style {
+  height: 28px;
+  font-family: MicrosoftJhengHei;
+  font-size: 19px;
+  font-weight: bold;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: normal;
+  letter-spacing: normal;
+  text-align: center;
+  color: #999;
+  border: none;
+}
+
+.common-switch-cancel-button-style {
+  height: 28px;
+  font-family: MicrosoftJhengHei;
+  font-size: 19px;
+  font-weight: bold;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: normal;
+  letter-spacing: normal;
+  text-align: center;
+  color: #999;
+  border: none;
+}
+
+.common-switch-ok-button-style {
+  height: 32px;
+  padding: 0px 8px 4px 8px;
+  background-color: #5ac8fa;
+  font-size: 19px;
+  font-weight: bold;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: normal;
+  letter-spacing: normal;
+  text-align: center;
+  border: none;
+  font-family: MicrosoftJhengHei;
+  color: #000;
+  border-radius: 2px;
+}
+
+.button-style-in-common-switch-panel {
+  background-color: #323233;
+  height: 39px;
+}
+
+.common-switch-input-value-style {
+  display: flex;
+/*   min-width: 169px; */
+  height: 40px;
+  padding: 0px 0px 0px 8px;
+  font-size: 19px;
+  text-align: center;
+  line-height: 36px;
+}
+
+.variable-value-dropdown-common-switch-in {
+  position: absolute;
+  width: 360px;
+  z-index: 10000;
+  font-size: 13px;
+  padding: 12px 12px;
+}
+
+.commonSwitchImgStyle {
+  display: inline-block;
+  background-size: 24px 24px;
+  background-image: url('../img/grayPhoto.svg');
+  background-repeat: no-repeat;
+  width: 24px;
+  height: 24px;
+  margin: 5px 4px 0 0;
+  padding: 2px;
+  object-fit: contain;
+}
+
+.commonSwitchImgInBlueStyle {
+  display: inline-block;
+  background-size: 24px 24px;
+  background-image: url('../img/bluePhoto.svg');
+  background-repeat: no-repeat;
+  width: 24px;
+  height: 24px;
+  margin: 5px 4px 0 0;
+  padding: 2px;
+  object-fit: contain;
+}
+
+.common-switch-time-picker-style {
+  margin-left: 12px;
+  height: 40px;
+}
+
+.common-switch-time-picker-style-mobile {
+  height: 40px;
+}
+
+.common-switch-time-picker-style-mobile .time-picker-button-select .select-button-value {
+  display: flex;
+}
+
+.common-switch-botton-style {
+  margin-top: 12px;
+}
+
+.variable-item-style {
+  display: block;
+  background-color: #323233;
+  border: 0px;
+  font-size: 15px;
+  color: #019ff3;
+}
+
+.commonSwitchTime {
+  width: 151px;
+  height: 40px;
+  font-family: MicrosoftJhengHei;
+  font-size: 15px;
+  font-weight: normal;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 1.25;
+  letter-spacing: normal;
+}
+
+.commonSwitchTimeMobile {
+  width: 151px;
+  height: 40px;
+  margin: 5px 0 0 4px;
+  font-family: MicrosoftJhengHei;
+  font-size: 15px;
+  font-weight: normal;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 1.25;
+  letter-spacing: normal;
+}
+
+.advantechCommonSwitchPanel {
+  margin-top: 8px;
+}
+
+.common-switch-title-input-invalide {
+  border: solid 2px #d9293e;
+}
+
+/* 
+.common-switch-title-input-valide {
+  border: none;
+} */
+
+.common-switch-invalid {
+  color: #d9293e;
+  margin-top: 5px;
+  margin-left: 3px;
+  font-weight: bold;
+}
+
+.common-switch-show-font {
+  max-width: 558px;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+
+.common-switch-i-props {
+  color: #8e8e8e;
+  width:24px;
+  height: 21px;
+  display: inline-block;
+}
+
+.common-switch-special-class-for-option option {
+  font-size: 14px;
+  width: 183px;
+}
+
+.common-switch-special-class-for-option:hover .common-switch-i-props{
+   /*  background-image: url('/public/img/btn-dropdown-date-active.svg');
+    background-repeat: no-repeat;
+    background-size: 100%; */
+    background-color: #006ee6;
+    height:21px;
+    width:24px;
+}
+
+.mobile-common-switch-overflow-style {
+  overflow: visible !important;
+}
+
+.common-switch-time-picker-style-mobile .fa-clock-o {
+  font-size: 20px;
+}
+
+.common-switch-img-style {
+  width: 8px;
+  height: 44px;
+  margin: 0 8px 0 12px;
+  object-fit: contain;
+}
+
+.common-devide-image-style {
+  display: inline-block;
+  background-size: 8px 44px;
+  background-image: url('../img/img-title-bar-div.svg');
+  background-repeat: no-repeat;
+  width: 8px;
+  height: 44px;
+  margin: 0 8px 0 0px;
+  object-fit: contain;
+}
+
+.up-and-down-common-switch-style {
+  display: inline-block;
+  width: 20px;
+  height: 37px;
+  margin-left: 5px;
+}
+
+.up-and-down-common-switch-style-active {
+  display: inline-block;
+  width: 20px;
+  height: 37px;
+  margin-left: 5px;
+}
+
+.button-up-and-down-common-switch-style {
+  display: inline-block;
+  background-size: 16px 16px;
+  background-image: url('../img/btn-dropdown-hover.svg');
+  background-repeat: no-repeat;
+  width: 20px;
+  height: 16px;
+}
+
+.button-up-and-down-common-switch-style-active {
+  display: inline-block;
+  background-size: 16px 16px;
+  background-image: url('../img/btn-dropdown-active.svg');
+  background-repeat: no-repeat;
+  width: 20px;
+  height: 16px;
+}
+
+.up-and-down-common-switch-style-active {
+  border-left: solid 1px #006ee6;
+}
+
+.common-switch-div-custom-time-range-style:hover {
+  border: 1px solid #006ee6;
+}
+
+.common-switch-div-custom-time-range-style:hover .gicon-common-switch-date-style {
+  display: inline-block;
+  width: 24px;
+  height: 21px;
+  background-image: url('/public/img/btn-dropdown-date-active.svg');
+  background-repeat: no-repeat;
+  background-size: 100%;
+  margin-right:5px;
+}
+.common-switch-div-custom-time-range-style:hover .common-switch-special-class-for-option{
+  color: #006ee6;
+}
+.common-switch-div-custom-time-range-style:hover .common-switch-i-props {
+  color: #d8d9da;
+}
+
+.common-switch-time-picker-style-mobile:hover {
+  border: solid 1px #006ee6;
+}
+.common-switch-time-picker-style-mobile:hover .select-button-value{
+ color: #006ee6;
+}
+
+.common-switch-time-picker-style-mobile:hover .fa{
+ color: #006ee6;
+}
+
+.common-switch-time-picker-style-mobile:hover .gicon-common-switch-date-style{
+   display: block;
+   width: 24px;
+   height: 21px;
+   background-image: url('/public/img/btn-dropdown-date-active.svg');
+   background-repeat: no-repeat;
+   background-size: 100%;
+   margin-right:5px;
+}

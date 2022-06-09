@@ -1,0 +1,58 @@
+.common-switch-input-value-style {
+  background-color: #1e1e1e;
+}
+
+.variable-value-dropdown-common-switch-in {
+  background: #0b0c0e;
+}
+
+.common-switch-filter-button-style {
+  background-color: #0b0c0e;
+}
+
+.common-switch-label {
+  background: #0b0c0e !important;
+  font-weight: bold;
+}
+
+.common-switch-cancel-button-style {
+  background-color: #0b0c0e;
+}
+
+.common-switch-time-picker-style {
+  border: solid 2px #464646;
+  background: #1e1e1e;
+}
+
+.common-switch-time-picker-style-mobile {
+  border: solid 2px #464646;
+  background: #141916;
+}
+
+.common-switch-time-picker-style-mobile .select-button-value {
+  font-size: 19px;
+  color: #fff;
+}
+
+.common-switch-time-picker-style-mobile .time-picker-button-select {
+  border: none;
+  background: #141619;
+}
+
+.common-switch-div-custom-time-range-style {
+  border: 2px solid rgb(70, 70, 70);
+  background: #1e1e1e;
+}
+
+.common-switch-special-class-for-option {
+  color: rgb(255,  255,  255);
+  background: #1e1e1e;
+}
+
+.commonSwitchTime {
+  color: #c8c8c8;
+}
+
+.up-and-down-common-switch-style {
+  border-left: solid 2px #464646
+}

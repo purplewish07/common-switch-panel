@@ -1,0 +1,63 @@
+.common-switch-input-value-style {
+  background-color: #e6e6e6;
+}
+
+.variable-value-dropdown-common-switch-in {
+  background: #dcdce0;
+}
+
+.common-switch-filter-button-style {
+  background-color: #dcdce0;
+}
+
+.common-switch-time-picker-style-mobile .select-button-value {
+  font-size: 19px;
+  color: #000;
+}
+
+.common-switch-time-picker-style-mobile .time-picker-button-select {
+  border: none;
+  background: #e6e6e6;
+}
+
+.common-switch-label {
+  background: #dcdce0 !important;
+  font-weight: bold;
+}
+
+.common-switch-cancel-button-style {
+  background-color: #dcdce0;
+}
+
+.common-switch-time-picker-style {
+  border: solid 2px #e6e6e6;
+  background: #e6e6e6;
+}
+
+.common-switch-time-picker-style-mobile {
+  border: solid 1px #c5c5c5;
+  background: #e6e6e6;
+}
+
+.common-switch-div-custom-time-range-style {
+  border: 2px solid #e6e6e6;
+  background: #e6e6e6;
+}
+
+.common-switch-div-custom-time-range-style:hover .common-switch-i-props {
+  color: #323233;
+}
+
+.common-switch-special-class-for-option {
+  color: rgb(255,  255,  255);
+  background: #e6e6e6;
+}
+
+.commonSwitchTime {
+  color: #323233;
+}
+
+.up-and-down-common-switch-style {
+  border-left: solid 1px #c5c5c5;
+}
+

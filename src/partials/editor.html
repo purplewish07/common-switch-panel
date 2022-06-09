@@ -1,0 +1,124 @@
+<div class="editor-row">
+  <div class="section gf-form-group">
+    <h5 class="section-heading" style="margin-bottom:15px;">{{'public.options' | translate}}</h5>
+    <div class="gf-form">
+      <label class="gf-form-label width-10">{{'public.title' | translate}}<i class="gicon gicon-i18n"></i></label>
+      <input ng-class="{true:'common-switch-title-input-invalide',false:'common-switch-title-input-valide'}[ctrl.titleInvalid]" type="text" class="gf-form-input max-width-11 ng-valid ng-empty ng-dirty ng-valid-parse ng-touched" ng-model="ctrl.panel.commonTitle" ng-blur="ctrl.validTitleFun()">
+      <span ng-show='ctrl.titleInvalid' class='common-switch-invalid'>{{'advantech-common-switch-panel.titleInfo' | translate}}</span>
+    </div>
+    <gf-form-switch class="gf-form" label-class="width-10" label="{{'public.adjustableFontSize' | translate}}" checked="ctrl.panel.commoneTitleAdjFontSize"
+    on-change="ctrl.onRender()"></gf-form-switch>
+    <div class="gf-form">
+      <label class="gf-form-label width-10">{{'public.fontSize' | translate}}<i class="gicon gicon-i18n"></i></label>
+      <div class="gf-form-select width-11">
+        <select class="gf-form-input" ng-model="ctrl.panel.commonFontSize" ng-options="f.value as f.text for f in ctrl.titleFontSizeVWList" ng-change="ctrl.fontSizeChanged()"></select>
+      </div>
+    </div>
+
+    <div class="gf-form">
+      <label class="gf-form-label width-10">{{'public.fontColor' | translate}}</label>
+      <span class="gf-form-label">
+        <spectrum-picker ng-model="ctrl.panel.commonFontColor" initColor="''" ng-change="ctrl.onRender()"></spectrum-picker>
+      </span>
+    </div>
+  </div>
+
+  <div class="section gf-form-group">
+      <h5 class="section-heading" style="margin-bottom:15px;">{{'advantech-common-switch-panel.lastUpdatedTimeSetting' | translate}}</h5>
+      <div class="gf-form">
+        <label class="gf-form-label width-10">{{'advantech-common-switch-panel.lastUpdatedTime' | translate}}</label>
+        <input type="text" class="gf-form-input width-16" ng-model="ctrl.panel.updataTime" ng-change="ctrl.onRender()">
+        <select class="gf-form-input" ng-model="ctrl.panel.queryDate" ng-options="f.value as f.text for f in ctrl.queryDateArray" ng-change="ctrl.handleUpdataFun();ctrl.onRender()"></select>
+        <select ng-show='ctrl.tableTypeFlag' class="gf-form-input" ng-model="ctrl.panel.tableData" ng-options="f.value as f.text for f in ctrl.tableColumns" ng-change="ctrl.onRender()"></select>
+      </div>
+  </div>
+  <div class="section gf-form-group">
+      <h5 class="section-heading" style="margin-bottom:15px;">{{'advantech-common-switch-panel.varSettings' | translate}}</h5>
+      <div class="gf-form">
+        <label class="gf-form-label width-8">{{'public.variables' | translate}}</label>
+        <div class="gf-form-select-wrapper max-width-11">
+          <select class="gf-form-input" ng-model="ctrl.panel.commonVarName"
+            ng-options="f.text as f.value for f in ctrl.normalVarOption"></select>
+        </div>
+        <button style="margin-left:15px;" class="btn btn-inverse" ng-click="ctrl.addVarItem()"><i
+            class="fa fa-plus"></i> {{'advantech-common-switch-panel.addVarItem' | translate}}</button>
+      </div>
+      <h5 ng-show="ctrl.panel.commonVarArray.length>0" class="section-heading" style="margin-top:15px">Variable List
+      </h5>
+
+      <table class="filter-table filter-table--hover" ng-show="ctrl.panel.commonVarArray.length>0">
+        <thead>
+          <tr>
+            <th>{{'public.name' | translate}}</th>
+            <th colspan="3"></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr ng-repeat="variable in ctrl.panel.commonVarArray">
+            <td>
+              <span class="pointer template-variable"> {{variable.name}}</span>
+            </td>
+            <td style="width: 1%">
+              <i ng-click="ctrl.moveVariable($index,-1)" ng-hide="$first" class="pointer fa fa-arrow-up"></i>
+            </td>
+            <td style="width: 1%">
+              <i ng-click="ctrl.moveVariable($index,1)" ng-hide="$last" class="pointer fa fa-arrow-down"></i>
+            </td>
+            <td style="width: 1%">
+              <a ng-click="ctrl.removeVarItem($index,variable.name)" class="btn btn-danger btn-small">
+                <i class="fa fa-remove"></i>
+              </a>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+</div>
+
+<div class="editor-row">
+  <div class="section gf-form-group">
+    <h5 class="section-heading" style="margin-bottom:15px;">{{'advantech-common-switch-panel.timeRangeSetting' | translate}}</h5>
+    <div class="gf-form">
+      <gf-form-switch class="gf-form" label-class="width-5" label="{{'public.enable' | translate}}" checked="ctrl.panel.timeRangeEnable"  
+      on-change="ctrl.onRender()"></gf-form-switch>
+    </div>
+    <div class="gf-form">
+      <label class="gf-form-label width-5">{{'public.mode' | translate}}</label>
+      <select class="gf-form-input width-15" style="padding: 0px 8px 0px 8px;" ng-model="ctrl.panel.timeMode" ng-change="ctrl.handleYearChangedonRender()">
+        <option value="Default TimeRange">{{'advantech-common-switch-panel.defaultTimeRange' | translate}}</option>
+        <option value="Custome TimeRange">{{'advantech-common-switch-panel.customeTimeRange' | translate}}</option>
+      </select>
+    </div>
+    <div class="gf-form" style="margin-top:5px;" ng-show='ctrl.panel.timeMode === "Custome TimeRange"'>
+      <label class="gf-form-label width-8">{{'advantech-common-switch-panel.dateMode' | translate}}</label>
+      <select class="gf-form-input width-10" style="padding: 0px 8px 0px 8px;" ng-model="ctrl.panel.dateMode" ng-options="f for f in ctrl.dateModeOptions" ng-change="ctrl.onRender()"></select>
+      <span ng-show='ctrl.panel.dateMode === "yyyy/MM"' style="display:flex;">
+          <label  class="gf-form-label width-8" style='display:inline'>{{'advantech-common-switch-panel.yearFrom' | translate}}</label>
+          <select class="gf-form-input width-8" style="padding: 0px 8px 0px 8px;display:inline" ng-model="ctrl.panel.yearFrom" ng-options="f for f in ctrl.yearFromOptions" ng-change="ctrl.handleYearChanged();ctrl.onRender()"></select>
+          <span ng-hide='ctrl.panel.yearFrom === "This Year" || !ctrl.panel.yearFrom'>
+              <label  class="gf-form-label width-8" style='display:inline'>{{'advantech-common-switch-panel.yearTo' | translate}}</label>
+              <select class="gf-form-input width-10" style="padding: 0px 8px 0px 8px;display:inline" ng-model="ctrl.panel.yearTo" ng-options="f for f in ctrl.yearToOptions" ng-change="ctrl.handleModeOneHistoryYearFun();ctrl.onRender()"></select>
+          </span>
+      </span>
+      <span ng-hide='ctrl.panel.dateMode === "yyyy/MM"' style="display:flex;">
+        <label class="gf-form-label width-10">{{'advantech-common-switch-panel.yearMonthFrom' | translate}}</label>
+        <select class="gf-form-input width-11" style="padding: 0px 8px 0px 8px;" ng-model="ctrl.panel.yearandMonthFrom" ng-options="f for f in ctrl.yearMonthFromOptions" ng-change="ctrl.handleYearChanged();ctrl.onRender()"></select>
+        <span ng-hide='ctrl.panel.yearandMonthFrom === "This Year/Month" || !ctrl.panel.yearandMonthFrom' style="display:flex;">
+          <label class="gf-form-label width-10">{{'advantech-common-switch-panel.yearMonthTo' | translate}}</label>
+          <select class="gf-form-input width-13" style="padding: 0px 8px 0px 8px;" ng-model="ctrl.panel.yearandMonthTo" ng-options="f for f in ctrl.yearMonthToOptions" ng-change="ctrl.handleHistoryYearMonthFun();ctrl.onRender()"></select>
+        </span>
+
+        <label class="gf-form-label width-10">{{'advantech-common-switch-panel.dayFromShift' | translate}}</label>
+        <input type="number" class="gf-form-input width-6" ng-model="ctrl.panel.dayFromShift" 
+          ng-change="ctrl.handleTimeShiftFun();">
+        <select class="gf-form-input width-7" style="padding: 0px 8px 0px 8px;" ng-model="ctrl.panel.dayFromType"
+         ng-options="f for f in ctrl.timeShiftOption" ng-change="ctrl.handleTimeShiftFun();"></select>
+        <label class="gf-form-label width-10">{{'advantech-common-switch-panel.dayToShift' | translate}}</label>
+        <input type="number" class="gf-form-input width-6" ng-model="ctrl.panel.dayToShift"
+          ng-change="ctrl.handleTimeShiftFun();">
+        <select class="gf-form-input width-7" style="padding: 0px 8px 0px 8px;" ng-model="ctrl.panel.dayToType" 
+          ng-options="f for f in ctrl.timeShiftOption" ng-change="ctrl.handleTimeShiftFun();"></select>
+      </span>
+    </div>
+  </div>
+</div>
