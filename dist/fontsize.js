@@ -165,7 +165,6 @@ System.register([], function(exports_1) {
                 }
                 return rfont;
             };
-            //li.na add
             fontSize.getGaugeFontPx = function (font) {
                 var unit = font.charAt(font.length - 1);
                 var rfont;
@@ -187,7 +186,6 @@ System.register([], function(exports_1) {
                 rfont = parseFloat(rfont);
                 return rfont;
             };
-            //li.na add
             fontSize.fontSizeCompatibility = function (isVw, value) {
                 var r = "70%";
                 fontSize.defaultValues.forEach(function (val) {

@@ -600,14 +600,18 @@ export class commonSwitchPanelCtrl extends MetricsPanelCtrl {
           this.todayFun();
           return;
         } else {
-          firstDay = trueTime + ' 00:00:00:000';
-          lastDay = trueTime + ' 23:59:59:999';
+          firstDay = trueTime.replace(/\//g,'-') + 'T00:00:00.000';
+          lastDay = trueTime.replace(/\//g,'-') + 'T23:59:59.999';
         }
       }
+      // console.log('timeZone',this.timeZoneData);
+      // console.log('day',firstDay,lastDay);
       const startTemp = new Date(firstDay);
       const lastTemp = new Date(lastDay);
+      // console.log('daytemp',startTemp,lastTemp);
       firstTime = startTemp.getTime();
       lastTime = lastTemp.getTime();
+      // console.log('before',firstTime,lastTime);
       if (this.panel.dayFromShift && this.panel.dayFromType) {
         const type = this.panel.dayFromType;
         const data = this.panel.dayFromShift;
@@ -630,9 +634,12 @@ export class commonSwitchPanelCtrl extends MetricsPanelCtrl {
           lastTime = lastTime + data * 1000;
         }
       }
+      // console.log('timeSrv',this.timeSrv);
+      // console.log('after',firstTime,lastTime);
+      // console.log(grafanaData.toUtc(firstTime),grafanaData.toUtc(lastTime));
       this.timeSrv.setTime({
         from: grafanaData.toUtc(firstTime),
-        to: grafanaData.toUtc(lastTime),
+        to: grafanaData.toUtc(lastTime)
       });
     }
   }

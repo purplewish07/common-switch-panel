@@ -4,7 +4,8 @@ module.exports = function(grunt) {
   var pkgJson = require('./package.json');
 
   grunt.loadNpmTasks('grunt-contrib-clean');
-  grunt.loadNpmTasks('grunt-typescript');
+  grunt.loadNpmTasks("grunt-ts");
+  // grunt.loadNpmTasks('grunt-typescript');
   grunt.loadNpmTasks('grunt-contrib-watch');
   grunt.loadNpmTasks('grunt-string-replace');
 
@@ -45,13 +46,13 @@ module.exports = function(grunt) {
         src: ['src/*.json', 'LICENSE', 'README.md'],
         dest: 'dist/',
       },
-      app_core_utils: {
-        expand: true,
-        flatten: true,
-        cwd: 'reference',
-        src: ['fontsize.ts', 'operationURL.ts'],
-        dest: 'node_modules/grafana-sdk-mocks/app/core/utils/',
-      },
+      // app_core_utils: {
+      //   expand: true,
+      //   flatten: true,
+      //   cwd: 'reference',
+      //   src: ['fontsize.ts', 'operationURL.ts'],
+      //   dest: 'node_modules/grafana-sdk-mocks/app/core/utils/',
+      // },
       app_headers: {
         expand: true,
         flatten: true,
@@ -61,8 +62,10 @@ module.exports = function(grunt) {
       },
     },
 
-    typescript: {
+    ts: {
       build: {
+        // tsconfig: './tsconfig.json',
+        
         src: ['dist/**/*.ts', '!**/*.d.ts'],
         dest: 'dist',
         options: {
@@ -74,6 +77,27 @@ module.exports = function(grunt) {
           experimentalDecorators: true,
           sourceMap: true,
           noImplicitAny: false,
+          // lib:['node_modules/@grafana/data/**/*.d.ts','node_modules/@grafana/ui/**/*.d.ts'],
+          // references: ['node_modules/@grafana/data/**/*.d.ts','node_modules/@grafana/ui/**/*.d.ts'],
+        },
+      },
+    },
+
+    typescript: {
+      build: {
+        // tsconfig: './tsconfig.json',
+        src: ['dist/**/*.ts', '!**/*.d.ts'],
+        dest: 'dist',
+        options: {
+          module: 'system',
+          target: 'es5',
+          rootDir: 'dist/',
+          declaration: true,
+          emitDecoratorMetadata: true,
+          experimentalDecorators: true,
+          sourceMap: true,
+          noImplicitAny: false,
+          references: ['node_modules/@grafana/data/**/*.d.ts','node_modules/@grafana/ui/**/*.d.ts'],
         },
       },
     },
@@ -118,13 +142,14 @@ module.exports = function(grunt) {
       },
     },
   });
-
+  
   grunt.registerTask('default', [
     'clean',
     'copy:dist_js',
-    'copy:app_core_utils',
+    // 'copy:app_core_utils',
     'copy:app_headers',
-    'typescript:build',
+    'ts:build',
+    // 'typescript:build',
     'copy:dist_html',
     'copy:dist_css',
     'copy:dist_img',

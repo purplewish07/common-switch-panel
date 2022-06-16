@@ -58,22 +58,6 @@ declare module 'app/core/utils/flatten' {
   export default flatten;
 }
 
-//shaun add
-// declare module 'app/core/utils/fontsize' {
-//   var fontsize: any;
-//   export default fontsize;
-// }
-
-declare module '@grafana/data' {
-  var data: any;
-  export default data;
-}
-
-declare module '@grafana/ui' {
-  var ui: any;
-  export default ui;
-}
-
 declare module 'app/core/utils/kbn' {
   var kbn: any;
   export default kbn;
@@ -132,7 +116,7 @@ declare module 'app/core/utils/datemath' {
 
 declare module 'app/plugins/sdk' {
   export class PanelCtrl{
-  constructor($scope:any, $injector: any);
+    constructor($scope:any, $injector: any);
     panel: any;
     error: any;
     row: any;
