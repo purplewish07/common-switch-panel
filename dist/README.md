@@ -1,8 +1,10 @@
-## rebuild Advantech Common Switch Panel
-Try to rebuild and fix select time bug.
+## Advantech Common Switch Panel
+
+### fix Advantech Common Switch Panel by Shaun 2022/06/14
+Try to fix setTime bug.
 Change Date format from YYYY/MM/DD HH:mm:ss:sss to YYYY-MM-DDTHH:mm:ss.sss
 
-## Advantech Common Switch Panel
+
 ### Building
 
 To complie, run:

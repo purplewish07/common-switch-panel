@@ -600,6 +600,8 @@ export class commonSwitchPanelCtrl extends MetricsPanelCtrl {
           this.todayFun();
           return;
         } else {
+          // Fix setTime bug by Shaun. 2022/06/14
+          // Change Date format from YYYY/MM/DD HH:mm:ss:sss to YYYY-MM-DDTHH:mm:ss.sss(ISO 8601 format)
           firstDay = trueTime.replace(/\//g,'-') + 'T00:00:00.000';
           lastDay = trueTime.replace(/\//g,'-') + 'T23:59:59.999';
         }
