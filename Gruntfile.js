@@ -4,8 +4,8 @@ module.exports = function(grunt) {
   var pkgJson = require('./package.json');
 
   grunt.loadNpmTasks('grunt-contrib-clean');
-  grunt.loadNpmTasks("grunt-ts");
-  // grunt.loadNpmTasks('grunt-typescript');
+  // grunt.loadNpmTasks("grunt-ts");
+  grunt.loadNpmTasks('grunt-typescript');
   grunt.loadNpmTasks('grunt-contrib-watch');
   grunt.loadNpmTasks('grunt-string-replace');
 
