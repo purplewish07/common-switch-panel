@@ -560,11 +560,13 @@ System.register(['angular', 'lodash', 'app/core/app_events', 'app/plugins/sdk', 
                                 return;
                             }
                             else {
-                                firstDay = trueTime + '/01';
-                                lastDay = trueTime + '/' + this.getLastDay(timeArr[0], timeArr[1]) + ' 23:59:59:999';
+                                firstDay = trueTime + '/01' + 'T00:00:00.000';
+                                lastDay = trueTime + '/' + this.getLastDay(timeArr[0], timeArr[1]) + 'T23:59:59.999';
                                 if (Number(timeArr[1]) === month) {
-                                    lastDay = trueTime + '/' + day + ' 23:59:59:999';
+                                    lastDay = trueTime + '/' + day + 'T23:59:59.999';
                                 }
+                                firstDay = firstDay.replace(/\//g, '-');
+                                lastDay = lastDay.replace(/\//g, '-');
                             }
                         }
                         else {
@@ -580,7 +582,7 @@ System.register(['angular', 'lodash', 'app/core/app_events', 'app/plugins/sdk', 
                             }
                         }
                         // console.log('timeZone',this.timeZoneData);
-                        // console.log('day',firstDay,lastDay);
+                        console.log('day', firstDay, lastDay);
                         var startTemp = new Date(firstDay);
                         var lastTemp = new Date(lastDay);
                         // console.log('daytemp',startTemp,lastTemp);

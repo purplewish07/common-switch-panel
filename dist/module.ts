@@ -589,11 +589,13 @@ export class commonSwitchPanelCtrl extends MetricsPanelCtrl {
           this.timeSrv.setTime({ from: 'now/M', to: 'now/M' });
           return;
         } else {
-          firstDay = trueTime + '/01';
-          lastDay = trueTime + '/' + this.getLastDay(timeArr[0], timeArr[1]) + ' 23:59:59:999';
+          firstDay = trueTime + '/01'+ 'T00:00:00.000';
+          lastDay = trueTime + '/' + this.getLastDay(timeArr[0], timeArr[1]) + 'T23:59:59.999';
           if (Number(timeArr[1]) === month) {
-            lastDay = trueTime + '/' + day + ' 23:59:59:999';
+            lastDay = trueTime + '/' + day + 'T23:59:59.999';
           }
+          firstDay=firstDay.replace(/\//g,'-');
+          lastDay=lastDay.replace(/\//g,'-');
         }
       } else {
         if (this.panel.trueTime === 'Today') {
@@ -607,7 +609,7 @@ export class commonSwitchPanelCtrl extends MetricsPanelCtrl {
         }
       }
       // console.log('timeZone',this.timeZoneData);
-      // console.log('day',firstDay,lastDay);
+      console.log('day',firstDay,lastDay);
       const startTemp = new Date(firstDay);
       const lastTemp = new Date(lastDay);
       // console.log('daytemp',startTemp,lastTemp);
