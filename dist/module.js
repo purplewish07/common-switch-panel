@@ -33,6 +33,7 @@ System.register(['angular', 'lodash', 'app/core/app_events', 'app/plugins/sdk', 
                 config_1 = config_1_1;
             }],
         execute: function() {
+            //import TemplateSrv from 'app/features/templating/template_srv';
             System.import('plugins/advantech-common-switch-panel/css/default.css' + '!css');
             sdk_1.loadPluginCss({
                 dark: 'plugins/advantech-common-switch-panel/css/commondark.css',
@@ -96,10 +97,12 @@ System.register(['angular', 'lodash', 'app/core/app_events', 'app/plugins/sdk', 
                     } : {
                         'color': '#fff',
                     };
+                    /* add time Range component start */
                     this.timeSrv = this.$scope.ctrl.timeSrv;
                     this.timeValue = this.timeSrv.timeRange();
                     this.timeZoneData = this.dashboard.getTimezone();
                     this.dateMath = this.timeSrv.dateMath();
+                    /* add time Range component end */
                     this.customTimePickerData = {
                         customTimePickerOption: this.dashboard.timepicker.panelTimePicker,
                         customRangeHide: this.dashboard.timepicker.customRangeHide,
@@ -108,6 +111,7 @@ System.register(['angular', 'lodash', 'app/core/app_events', 'app/plugins/sdk', 
                         dashboardTimeRangeFlag: true,
                         customTimeRangePicker: this.dashboard.timepicker.customTimeRange,
                     };
+                    /* add time Range component end */
                     for (var i = 0; i < varArray.length; i++) {
                         this.normalVarOption.push({ value: varArray[i].name, text: varArray[i].name });
                     }
@@ -142,6 +146,7 @@ System.register(['angular', 'lodash', 'app/core/app_events', 'app/plugins/sdk', 
                     });
                     this.titleInvalid = false;
                     this.renderFlag = false;
+                    /* custome time range */
                     this.initFun();
                     if (this.panel.timeMode && this.panel.timeMode === "Default TimeRange") {
                         this.panel.trueTime = '';
@@ -215,6 +220,7 @@ System.register(['angular', 'lodash', 'app/core/app_events', 'app/plugins/sdk', 
                     this.onRender();
                 };
                 commonSwitchPanelCtrl.prototype.moveVariable = function (index, dir) {
+                    // @ts-ignore
                     lodash_1.default.move(this.panel.commonVarArray, index, index + dir);
                     this.onRender();
                 };
@@ -440,6 +446,7 @@ System.register(['angular', 'lodash', 'app/core/app_events', 'app/plugins/sdk', 
                     }
                     i18n_1.setI18n(this.panel, 'commonTitle', this.panel.commonTitle, this.dashboard.panelLanguage);
                 };
+                //custom time range code
                 commonSwitchPanelCtrl.prototype.initFun = function () {
                     var date = new Date();
                     var year = date.getFullYear();
@@ -453,6 +460,7 @@ System.register(['angular', 'lodash', 'app/core/app_events', 'app/plugins/sdk', 
                             this.yearToOptions.push(i);
                         }
                     }
+                    //yyyy/MM/dd
                     this.yearMonthFromOptions = [];
                     this.yearMonthToOptions = [];
                     this.yearMonthFromOptions.push('This Year/Month');
@@ -565,14 +573,20 @@ System.register(['angular', 'lodash', 'app/core/app_events', 'app/plugins/sdk', 
                                 return;
                             }
                             else {
+                                // Fix setTime bug by Shaun. 2022/06/14
+                                // Change Date format from YYYY/MM/DD HH:mm:ss:sss to YYYY-MM-DDTHH:mm:ss.sss(ISO 8601 format)
                                 firstDay = trueTime.replace(/\//g, '-') + 'T00:00:00.000';
                                 lastDay = trueTime.replace(/\//g, '-') + 'T23:59:59.999';
                             }
                         }
+                        // console.log('timeZone',this.timeZoneData);
+                        // console.log('day',firstDay,lastDay);
                         var startTemp = new Date(firstDay);
                         var lastTemp = new Date(lastDay);
+                        // console.log('daytemp',startTemp,lastTemp);
                         firstTime = startTemp.getTime();
                         lastTime = lastTemp.getTime();
+                        // console.log('before',firstTime,lastTime);
                         if (this.panel.dayFromShift && this.panel.dayFromType) {
                             var type = this.panel.dayFromType;
                             var data = this.panel.dayFromShift;
@@ -599,6 +613,9 @@ System.register(['angular', 'lodash', 'app/core/app_events', 'app/plugins/sdk', 
                                 lastTime = lastTime + data * 1000;
                             }
                         }
+                        // console.log('timeSrv',this.timeSrv);
+                        // console.log('after',firstTime,lastTime);
+                        // console.log(grafanaData.toUtc(firstTime),grafanaData.toUtc(lastTime));
                         this.timeSrv.setTime({
                             from: data_1.default.toUtc(firstTime),
                             to: data_1.default.toUtc(lastTime)
@@ -686,6 +703,7 @@ System.register(['angular', 'lodash', 'app/core/app_events', 'app/plugins/sdk', 
                     }
                 };
                 commonSwitchPanelCtrl.prototype.handleHistoryYearMonthFun = function () {
+                    // only from
                     var fromD = this.panel.yearandMonthFrom;
                     var toD = this.panel.yearandMonthTo;
                     var fromArr = fromD.split("/");
@@ -693,6 +711,7 @@ System.register(['angular', 'lodash', 'app/core/app_events', 'app/plugins/sdk', 
                     this.timeSelectedArr.push('Today');
                     this.yearMonthToOptions = [];
                     this.yearMonthToOptions.push('This Year/Month');
+                    //from produces to
                     var date = new Date();
                     var year = date.getFullYear();
                     var month = date.getMonth() + 1;
@@ -701,6 +720,7 @@ System.register(['angular', 'lodash', 'app/core/app_events', 'app/plugins/sdk', 
                     var fromMonthTime = (Number(fromArr[1]));
                     this.fromProducteToFun(year, fromTimeD, fromMonthTime, month);
                     if (!toD) {
+                        //get this month last day
                         var lastD = this.getLastDay(fromArr[0], fromArr[1]);
                         for (var i = lastD; i > 0; i--) {
                             var d = i;
@@ -716,6 +736,7 @@ System.register(['angular', 'lodash', 'app/core/app_events', 'app/plugins/sdk', 
                     }
                 };
                 commonSwitchPanelCtrl.prototype.calDetailsDayFun = function (toD, year, month, fromYearTime, fromMonthTime, dayData) {
+                    //cal from for to time yyyy/MM
                     var tempCurrentYM = toD;
                     if (toD === 'This Year/Month') {
                         tempCurrentYM = year + '/' + month;
@@ -723,12 +744,14 @@ System.register(['angular', 'lodash', 'app/core/app_events', 'app/plugins/sdk', 
                             tempCurrentYM = year + '/0' + month;
                         }
                     }
+                    //timeTo year and Month
                     var toArr = tempCurrentYM.split("/");
                     var toYearData = Number(toArr[0]);
                     var toMonthData = Number(toArr[1]);
                     var calStart, calEnd;
                     for (var h = toYearData; h > fromYearTime - 1; h--) {
                         if (h === year) {
+                            //current year
                             var count = 1;
                             if (year === fromYearTime) {
                                 count = fromMonthTime;
@@ -792,6 +815,7 @@ System.register(['angular', 'lodash', 'app/core/app_events', 'app/plugins/sdk', 
                     for (var k = year; k > (fromTimeD - 1); k--) {
                         var totalSCount = void 0, endCount = void 0;
                         if (k === year) {
+                            //current year
                             var count = 0;
                             if (year === fromTimeD) {
                                 count = toTimeD;
@@ -800,6 +824,7 @@ System.register(['angular', 'lodash', 'app/core/app_events', 'app/plugins/sdk', 
                             endCount = month;
                         }
                         else if (k === fromTimeD) {
+                            //timeRange from year
                             totalSCount = toTimeD;
                             endCount = 12;
                         }

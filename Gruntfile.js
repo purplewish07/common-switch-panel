@@ -64,8 +64,6 @@ module.exports = function(grunt) {
 
     ts: {
       build: {
-        // tsconfig: './tsconfig.json',
-        
         src: ['dist/**/*.ts', '!**/*.d.ts'],
         dest: 'dist',
         options: {
@@ -77,15 +75,12 @@ module.exports = function(grunt) {
           experimentalDecorators: true,
           sourceMap: true,
           noImplicitAny: false,
-          // lib:['node_modules/@grafana/data/**/*.d.ts','node_modules/@grafana/ui/**/*.d.ts'],
-          // references: ['node_modules/@grafana/data/**/*.d.ts','node_modules/@grafana/ui/**/*.d.ts'],
         },
       },
     },
 
     typescript: {
       build: {
-        // tsconfig: './tsconfig.json',
         src: ['dist/**/*.ts', '!**/*.d.ts'],
         dest: 'dist',
         options: {
@@ -97,7 +92,6 @@ module.exports = function(grunt) {
           experimentalDecorators: true,
           sourceMap: true,
           noImplicitAny: false,
-          references: ['node_modules/@grafana/data/**/*.d.ts','node_modules/@grafana/ui/**/*.d.ts'],
         },
       },
     },
@@ -148,8 +142,8 @@ module.exports = function(grunt) {
     'copy:dist_js',
     // 'copy:app_core_utils',
     'copy:app_headers',
-    'ts:build',
-    // 'typescript:build',
+    // 'ts:build',
+    'typescript:build',
     'copy:dist_html',
     'copy:dist_css',
     'copy:dist_img',
