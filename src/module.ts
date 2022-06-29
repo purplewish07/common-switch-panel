@@ -169,7 +169,10 @@ export class commonSwitchPanelCtrl extends MetricsPanelCtrl {
     // console.log(this.timeValue.from);
     // console.log(this.timeValue.from.toISOString().replace(/T.*/g,'').replace(/-/g,'/'));
     // console.log('construction',this.panel.trueTime);
-    this.panel.trueTime=this.timeValue.from.toISOString().replace(/T.*/g,'').replace(/-/g,'/');
+    var Today = new Date().toISOString().slice(0, 10);
+    if(this.timeValue.from.toISOString().slice(0, 10)!==Today){
+      this.panel.trueTime=this.timeValue.from.toISOString().slice(0, 10).replace(/-/g,'/');
+    }
     // console.log(this.panel.trueTime);
     this.firstload = true;
     this.handleYearChanged();
