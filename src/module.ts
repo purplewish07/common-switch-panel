@@ -79,6 +79,7 @@ export class commonSwitchPanelCtrl extends MetricsPanelCtrl {
   refreshTimeFlag: any;
   fontColorData: any;
   isPc: boolean;
+  firstload: boolean;
 
   constructor($scope, $injector, $window, $timeout) {
     super($scope, $injector);
@@ -106,7 +107,7 @@ export class commonSwitchPanelCtrl extends MetricsPanelCtrl {
     } : {
       'color': '#fff',
     };
-
+    
     /* add time Range component start */
     this.timeSrv = this.$scope.ctrl.timeSrv;
     this.timeValue = this.timeSrv.timeRange();
@@ -165,10 +166,17 @@ export class commonSwitchPanelCtrl extends MetricsPanelCtrl {
     if (this.panel.timeMode && this.panel.timeMode === "Default TimeRange") {
       this.panel.trueTime = '';
     }
+    // console.log(this.timeValue.from);
+    // console.log(this.timeValue.from.toISOString().replace(/T.*/g,'').replace(/-/g,'/'));
+    // console.log('construction',this.panel.trueTime);
+    this.panel.trueTime=this.timeValue.from.toISOString().replace(/T.*/g,'').replace(/-/g,'/');
+    // console.log(this.panel.trueTime);
+    this.firstload = true;
     this.handleYearChanged();
     this.tableTypeFlag = false;
     this.handleTrueTimeChanged();
     this.refreshTimeFlag = false;
+    this.firstload = false;
     const oldVersion = this.panel.commonSwitchVersion;
     this.panel.commonSwitchVersion = 1;
     if (this.panel.commonSwitchVersion !== oldVersion) {
@@ -586,7 +594,9 @@ export class commonSwitchPanelCtrl extends MetricsPanelCtrl {
       let firstDay, lastDay;
       if (this.panel.dateMode === 'yyyy/MM') {
         if (this.panel.trueTime === 'This Month') {
-          this.timeSrv.setTime({ from: 'now/M', to: 'now/M' });
+          if(this.firstload===false){
+            this.timeSrv.setTime({ from: 'now/M', to: 'now/M' });
+          }
           return;
         } else {
           firstDay = trueTime + '/01'+ 'T00:00:00.000';
@@ -608,8 +618,7 @@ export class commonSwitchPanelCtrl extends MetricsPanelCtrl {
           lastDay = trueTime.replace(/\//g,'-') + 'T23:59:59.999';
         }
       }
-      // console.log('timeZone',this.timeZoneData);
-      console.log('day',firstDay,lastDay);
+      // console.log('day',firstDay,lastDay);
       const startTemp = new Date(firstDay);
       const lastTemp = new Date(lastDay);
       // console.log('daytemp',startTemp,lastTemp);
@@ -641,10 +650,12 @@ export class commonSwitchPanelCtrl extends MetricsPanelCtrl {
       // console.log('timeSrv',this.timeSrv);
       // console.log('after',firstTime,lastTime);
       // console.log(grafanaData.toUtc(firstTime),grafanaData.toUtc(lastTime));
-      this.timeSrv.setTime({
-        from: grafanaData.toUtc(firstTime),
-        to: grafanaData.toUtc(lastTime)
-      });
+      if(this.firstload===false){
+        this.timeSrv.setTime({
+          from: grafanaData.toUtc(firstTime),
+          to: grafanaData.toUtc(lastTime)
+        });
+      }
     }
   }
 
@@ -681,7 +692,10 @@ export class commonSwitchPanelCtrl extends MetricsPanelCtrl {
     if (timeFromDataValue) {
       tempFromTime = tempFromTime + "+" + timeFromDataValue;
     }
-    this.timeSrv.setTime({ from: tempFromTime, to: tempToTime });
+    if(this.firstload===false){
+      this.timeSrv.setTime({ from: tempFromTime, to: tempToTime });
+    }
+    
   }
 
   handleYearChanged() {

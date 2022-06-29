@@ -151,10 +151,17 @@ System.register(['angular', 'lodash', 'app/core/app_events', 'app/plugins/sdk', 
                     if (this.panel.timeMode && this.panel.timeMode === "Default TimeRange") {
                         this.panel.trueTime = '';
                     }
+                    // console.log(this.timeValue.from);
+                    // console.log(this.timeValue.from.toISOString().replace(/T.*/g,'').replace(/-/g,'/'));
+                    // console.log('construction',this.panel.trueTime);
+                    this.panel.trueTime = this.timeValue.from.toISOString().replace(/T.*/g, '').replace(/-/g, '/');
+                    // console.log(this.panel.trueTime);
+                    this.firstload = true;
                     this.handleYearChanged();
                     this.tableTypeFlag = false;
                     this.handleTrueTimeChanged();
                     this.refreshTimeFlag = false;
+                    this.firstload = false;
                     var oldVersion = this.panel.commonSwitchVersion;
                     this.panel.commonSwitchVersion = 1;
                     if (this.panel.commonSwitchVersion !== oldVersion) {
@@ -556,7 +563,9 @@ System.register(['angular', 'lodash', 'app/core/app_events', 'app/plugins/sdk', 
                         var firstDay, lastDay;
                         if (this.panel.dateMode === 'yyyy/MM') {
                             if (this.panel.trueTime === 'This Month') {
-                                this.timeSrv.setTime({ from: 'now/M', to: 'now/M' });
+                                if (this.firstload === false) {
+                                    this.timeSrv.setTime({ from: 'now/M', to: 'now/M' });
+                                }
                                 return;
                             }
                             else {
@@ -581,8 +590,7 @@ System.register(['angular', 'lodash', 'app/core/app_events', 'app/plugins/sdk', 
                                 lastDay = trueTime.replace(/\//g, '-') + 'T23:59:59.999';
                             }
                         }
-                        // console.log('timeZone',this.timeZoneData);
-                        console.log('day', firstDay, lastDay);
+                        // console.log('day',firstDay,lastDay);
                         var startTemp = new Date(firstDay);
                         var lastTemp = new Date(lastDay);
                         // console.log('daytemp',startTemp,lastTemp);
@@ -618,10 +626,12 @@ System.register(['angular', 'lodash', 'app/core/app_events', 'app/plugins/sdk', 
                         // console.log('timeSrv',this.timeSrv);
                         // console.log('after',firstTime,lastTime);
                         // console.log(grafanaData.toUtc(firstTime),grafanaData.toUtc(lastTime));
-                        this.timeSrv.setTime({
-                            from: data_1.default.toUtc(firstTime),
-                            to: data_1.default.toUtc(lastTime)
-                        });
+                        if (this.firstload === false) {
+                            this.timeSrv.setTime({
+                                from: data_1.default.toUtc(firstTime),
+                                to: data_1.default.toUtc(lastTime)
+                            });
+                        }
                     }
                 };
                 commonSwitchPanelCtrl.prototype.todayFormatFun = function (type, data) {
@@ -657,7 +667,9 @@ System.register(['angular', 'lodash', 'app/core/app_events', 'app/plugins/sdk', 
                     if (timeFromDataValue) {
                         tempFromTime = tempFromTime + "+" + timeFromDataValue;
                     }
-                    this.timeSrv.setTime({ from: tempFromTime, to: tempToTime });
+                    if (this.firstload === false) {
+                        this.timeSrv.setTime({ from: tempFromTime, to: tempToTime });
+                    }
                 };
                 commonSwitchPanelCtrl.prototype.handleYearChanged = function () {
                     if (this.panel.dateMode === 'yyyy/MM') {

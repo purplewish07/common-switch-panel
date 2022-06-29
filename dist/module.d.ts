@@ -61,6 +61,7 @@ export declare class commonSwitchPanelCtrl extends MetricsPanelCtrl {
     refreshTimeFlag: any;
     fontColorData: any;
     isPc: boolean;
+    firstload: boolean;
     constructor($scope: any, $injector: any, $window: any, $timeout: any);
     onInitEditMode(): void;
     onInitPanelActions(): void;
