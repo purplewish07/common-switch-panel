@@ -173,7 +173,8 @@ export class commonSwitchPanelCtrl extends MetricsPanelCtrl {
     if(this.timeValue.from.toISOString().slice(0, 10)!==Today){
       this.panel.trueTime=this.timeValue.from.toISOString().slice(0, 10).replace(/-/g,'/');
     }
-    // console.log(this.panel.trueTime);
+    //console.log(this.panel.trueTime);
+    //console.log(this.panel.commonVarArray);
     this.firstload = true;
     this.handleYearChanged();
     this.tableTypeFlag = false;
@@ -621,10 +622,10 @@ export class commonSwitchPanelCtrl extends MetricsPanelCtrl {
           lastDay = trueTime.replace(/\//g,'-') + 'T23:59:59.999';
         }
       }
-      // console.log('day',firstDay,lastDay);
+      //console.log('day',firstDay,lastDay);
       const startTemp = new Date(firstDay);
       const lastTemp = new Date(lastDay);
-      // console.log('daytemp',startTemp,lastTemp);
+      //console.log('daytemp',startTemp,lastTemp);
       firstTime = startTemp.getTime();
       lastTime = lastTemp.getTime();
       // console.log('before',firstTime,lastTime);
@@ -727,20 +728,27 @@ export class commonSwitchPanelCtrl extends MetricsPanelCtrl {
 
   handleCurrentYearMonthFun() {
     const date = new Date();
-    const year = date.getFullYear();
-    let month: any = date.getMonth() + 1;
-    const day = date.getDate();
     this.timeSelectedArr = [];
+    // 推入 'Today'
     this.timeSelectedArr.push('Today');
-    if (month < 10) {
-      month = '0' + month;
-    }
-    for (let i = day; i > 0; i--) {
-      let tempD: any = i;
-      if (i < 10) {
-        tempD = '0' + i;
+
+    // 遍历近30天
+    for (let i = 0; i < 30; i++) {
+      const tempDate = new Date();
+      tempDate.setDate(date.getDate() - i);
+
+      const year = tempDate.getFullYear();
+      let month: any = tempDate.getMonth() + 1;
+      let day: any = tempDate.getDate();
+
+      if (month < 10) {
+        month = '0' + month;
       }
-      const tempTime = year + '/' + month + '/' + tempD;
+      if (day < 10) {
+        day = '0' + day;
+      }
+
+      const tempTime = year + '/' + month + '/' + day;
       this.timeSelectedArr.push(tempTime);
     }
   }

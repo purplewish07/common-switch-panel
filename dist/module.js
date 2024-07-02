@@ -158,7 +158,8 @@ System.register(['angular', 'lodash', 'app/core/app_events', 'app/plugins/sdk', 
                     if (this.timeValue.from.toISOString().slice(0, 10) !== Today) {
                         this.panel.trueTime = this.timeValue.from.toISOString().slice(0, 10).replace(/-/g, '/');
                     }
-                    // console.log(this.panel.trueTime);
+                    //console.log(this.panel.trueTime);
+                    //console.log(this.panel.commonVarArray);
                     this.firstload = true;
                     this.handleYearChanged();
                     this.tableTypeFlag = false;
@@ -593,10 +594,10 @@ System.register(['angular', 'lodash', 'app/core/app_events', 'app/plugins/sdk', 
                                 lastDay = trueTime.replace(/\//g, '-') + 'T23:59:59.999';
                             }
                         }
-                        // console.log('day',firstDay,lastDay);
+                        //console.log('day',firstDay,lastDay);
                         var startTemp = new Date(firstDay);
                         var lastTemp = new Date(lastDay);
-                        // console.log('daytemp',startTemp,lastTemp);
+                        //console.log('daytemp',startTemp,lastTemp);
                         firstTime = startTemp.getTime();
                         lastTime = lastTemp.getTime();
                         // console.log('before',firstTime,lastTime);
@@ -702,20 +703,23 @@ System.register(['angular', 'lodash', 'app/core/app_events', 'app/plugins/sdk', 
                 };
                 commonSwitchPanelCtrl.prototype.handleCurrentYearMonthFun = function () {
                     var date = new Date();
-                    var year = date.getFullYear();
-                    var month = date.getMonth() + 1;
-                    var day = date.getDate();
                     this.timeSelectedArr = [];
+                    // 推入 'Today'
                     this.timeSelectedArr.push('Today');
-                    if (month < 10) {
-                        month = '0' + month;
-                    }
-                    for (var i = day; i > 0; i--) {
-                        var tempD = i;
-                        if (i < 10) {
-                            tempD = '0' + i;
+                    // 遍历近30天
+                    for (var i = 0; i < 30; i++) {
+                        var tempDate = new Date();
+                        tempDate.setDate(date.getDate() - i);
+                        var year = tempDate.getFullYear();
+                        var month = tempDate.getMonth() + 1;
+                        var day = tempDate.getDate();
+                        if (month < 10) {
+                            month = '0' + month;
                         }
-                        var tempTime = year + '/' + month + '/' + tempD;
+                        if (day < 10) {
+                            day = '0' + day;
+                        }
+                        var tempTime = year + '/' + month + '/' + day;
                         this.timeSelectedArr.push(tempTime);
                     }
                 };

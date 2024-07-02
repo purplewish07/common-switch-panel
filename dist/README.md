@@ -7,15 +7,20 @@ Change Date format from YYYY/MM/DD HH:mm:ss:sss to YYYY-MM-DDTHH:mm:ss.sss(ISO 8
 
 ### Building
 
-To complie, run:
 
+To install packages
 ```
 npm install -g yarn
 yarn install --pure-lockfile
-grunt
 ```
 
 To lint everything:
 
 ```
 yarn pretty
+```
+
+To complie, run:
+```
+grunt
+```
