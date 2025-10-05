@@ -581,8 +581,26 @@ export class commonSwitchPanelCtrl extends MetricsPanelCtrl {
   }
 
   getLastDay(year, month) {
-    var date = new Date(year, month, 1);
+    // 確保參數為數字型別
+    const numYear = typeof year === 'string' ? parseInt(year, 10) : year;
+    const numMonth = typeof month === 'string' ? parseInt(month, 10) : month;
+    
+    // 添加調試信息
+    // console.log('getLastDay inputs:', { year, month, numYear, numMonth });
+    
+    // 驗證參數有效性
+    if (isNaN(numYear) || isNaN(numMonth) || numMonth < 1 || numMonth > 12) {
+      console.error('Invalid parameters for getLastDay:', { numYear, numMonth });
+      return 31; // 返回默認值避免 NaN
+    }
+    
+    // JavaScript Date 的 month 是從 0 開始，所以這裡傳入 numMonth 會得到下個月的第一天
+    var date = new Date(numYear, numMonth, 1);
+    // 減去一天得到當前月的最後一天
     var lastday = new Date(date.getTime() - 1000 * 60 * 60 * 24).getDate();
+    
+    // console.log('getLastDay result:', { date: date.toString(), lastday });
+    
     return lastday;
   }
 
@@ -606,10 +624,14 @@ export class commonSwitchPanelCtrl extends MetricsPanelCtrl {
           firstDay = trueTime + '/01'+ 'T00:00:00.000';
           lastDay = trueTime + '/' + this.getLastDay(timeArr[0], timeArr[1]) + 'T23:59:59.999';
           if (Number(timeArr[1]) === month) {
-            lastDay = trueTime + '/' + day + 'T23:59:59.999';
+            // 確保日期格式正確，添加前導零
+            const dayFormatted = day < 10 ? '0' + day : day;
+            lastDay = trueTime + '/' + dayFormatted + 'T23:59:59.999';
           }
           firstDay=firstDay.replace(/\//g,'-');
           lastDay=lastDay.replace(/\//g,'-');
+          
+          // console.log('Final dates:', { firstDay, lastDay });
         }
       } else {
         if (this.panel.trueTime === 'Today') {
