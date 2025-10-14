@@ -700,28 +700,105 @@ export class commonSwitchPanelCtrl extends MetricsPanelCtrl {
 
   todayFun() {
     let timeToDataValue, timeFromDataValue;
-    if (this.panel.dayToType && this.panel.dayToShift) {
-      const type = this.panel.dayToType;
-      const data = this.panel.dayToShift;
-      timeToDataValue = this.todayFormatFun(type, data);
-    }
+    
+    // 計算偏移毫秒數
+    let fromOffsetMs = 0;
+    let toOffsetMs = 0;
+    
     if (this.panel.dayFromShift && this.panel.dayFromType) {
       const fromType = this.panel.dayFromType;
       const fromData = this.panel.dayFromShift;
-      timeFromDataValue = this.todayFormatFun(fromType, fromData);
-    }
-    let tempToTime = 'now/d';
-    if (timeToDataValue) {
-      tempToTime = tempToTime + '+' + timeToDataValue;
-    }
-    let tempFromTime = 'now/d';
-    if (timeFromDataValue) {
-      tempFromTime = tempFromTime + "+" + timeFromDataValue;
-    }
-    if(this.firstload===false){
-      this.timeSrv.setTime({ from: tempFromTime, to: tempToTime });
+      
+      if (fromType === 'hour') {
+        fromOffsetMs = fromData * 60 * 60 * 1000;
+      } else if (fromType === 'minute') {
+        fromOffsetMs = fromData * 60 * 1000;
+      } else if (fromType === 'second') {
+        fromOffsetMs = fromData * 1000;
+      }
     }
     
+    if (this.panel.dayToShift && this.panel.dayToType) {
+      const toType = this.panel.dayToType;
+      const toData = this.panel.dayToShift;
+      
+      if (toType === 'hour') {
+        toOffsetMs = toData * 60 * 60 * 1000;
+      } else if (toType === 'minute') {
+        toOffsetMs = toData * 60 * 1000;
+      } else if (toType === 'second') {
+        toOffsetMs = toData * 1000;
+      }
+    }
+    
+    // 如果有 dayToShift 偏移，使用跨日邏輯
+    if (toOffsetMs !== 0) {
+      const now: Date = new Date();
+      
+      // 使用不同的變數名避免衝突
+      let beginDate: Date, finishDate: Date;
+      
+      if (toOffsetMs > 0) {
+        // 正偏移：從昨天的偏移時間開始，到今天的偏移時間結束
+        // 例如：+30分鐘 -> 昨天 00:30 到今天 00:29:59
+        beginDate = new Date();
+        beginDate.setDate(now.getDate() - 1);
+        beginDate.setHours(0, 0, 0, 0);
+        beginDate.setTime(beginDate.getTime() + toOffsetMs);
+        
+        finishDate = new Date();
+        finishDate.setHours(0, 0, 0, 0);
+        finishDate.setTime(finishDate.getTime() + toOffsetMs - 1000);
+      } else {
+        // 負偏移：從今天的負偏移時間開始，到明天的負偏移時間結束
+        // 例如：-30分鐘 -> 今天 23:30 到明天 23:29:59
+        beginDate = new Date();
+        beginDate.setHours(0, 0, 0, 0);
+        beginDate.setTime(beginDate.getTime() + toOffsetMs);
+        
+        finishDate = new Date();
+        finishDate.setDate(now.getDate() + 1);
+        finishDate.setHours(0, 0, 0, 0);
+        finishDate.setTime(finishDate.getTime() + toOffsetMs - 1000);
+      }
+      
+      // 如果還有 dayFromShift，進一步調整開始時間
+      if (fromOffsetMs !== 0) {
+        beginDate.setTime(beginDate.getTime() + fromOffsetMs);
+      }
+      
+      if (this.firstload === false) {
+        this.timeSrv.setTime({
+          from: grafanaData.toUtc(beginDate.getTime()),
+          to: grafanaData.toUtc(finishDate.getTime())
+        });
+      }
+    } else {
+      // 沒有 dayToShift 偏移，使用原有的 Grafana 表達式邏輯
+      if (this.panel.dayToType && this.panel.dayToShift) {
+        const type = this.panel.dayToType;
+        const data = this.panel.dayToShift;
+        timeToDataValue = this.todayFormatFun(type, data);
+      }
+      if (this.panel.dayFromShift && this.panel.dayFromType) {
+        const fromType = this.panel.dayFromType;
+        const fromData = this.panel.dayFromShift;
+        timeFromDataValue = this.todayFormatFun(fromType, fromData);
+      }
+      
+      let tempToTime = 'now/d';
+      if (timeToDataValue) {
+        tempToTime = tempToTime + '+' + timeToDataValue;
+      }
+      let tempFromTime = 'now/d';
+      if (timeFromDataValue) {
+        tempFromTime = tempFromTime + '+' + timeFromDataValue;
+      }
+      
+      if (this.firstload === false) {
+        this.timeSrv.setTime({ from: tempFromTime, to: tempToTime });
+      }
+    }
   }
 
   handleYearChanged() {
