@@ -700,29 +700,68 @@ System.register(['angular', 'lodash', 'app/core/app_events', 'app/plugins/sdk', 
                     // 如果有 dayToShift 偏移，使用跨日邏輯
                     if (toOffsetMs !== 0) {
                         var now = new Date();
-                        // 使用不同的變數名避免衝突
                         var beginDate, finishDate;
                         if (toOffsetMs > 0) {
-                            // 正偏移：從昨天的偏移時間開始，到今天的偏移時間結束
-                            // 例如：+30分鐘 -> 昨天 00:30 到今天 00:29:59
-                            beginDate = new Date();
-                            beginDate.setDate(now.getDate() - 1);
-                            beginDate.setHours(0, 0, 0, 0);
-                            beginDate.setTime(beginDate.getTime() + toOffsetMs);
-                            finishDate = new Date();
-                            finishDate.setHours(0, 0, 0, 0);
-                            finishDate.setTime(finishDate.getTime() + toOffsetMs - 1000);
+                            // 正偏移：需要判斷當前時間屬於哪個業務日
+                            var currentTimeMs = now.getHours() * 60 * 60 * 1000 +
+                                now.getMinutes() * 60 * 1000 +
+                                now.getSeconds() * 1000;
+                            if (currentTimeMs >= toOffsetMs) {
+                                // 當前時間 >= 偏移時間，屬於今天的業務日
+                                // 例如：10:00:45 >= 08:00:00，所以是今天的業務日
+                                // 範圍：今天 08:00:00 到明天 07:59:59
+                                beginDate = new Date();
+                                beginDate.setDate(now.getDate());
+                                beginDate.setHours(0, 0, 0, 0);
+                                beginDate.setTime(beginDate.getTime() + toOffsetMs);
+                                finishDate = new Date();
+                                finishDate.setDate(now.getDate() + 1);
+                                finishDate.setHours(0, 0, 0, 0);
+                                finishDate.setTime(finishDate.getTime() + toOffsetMs - 1000);
+                            }
+                            else {
+                                // 當前時間 < 偏移時間，還屬於昨天的業務日
+                                // 例如：06:00:00 < 08:00:00，所以還是昨天的業務日
+                                // 範圍：昨天 08:00:00 到今天 07:59:59
+                                beginDate = new Date();
+                                beginDate.setDate(now.getDate() - 1);
+                                beginDate.setHours(0, 0, 0, 0);
+                                beginDate.setTime(beginDate.getTime() + toOffsetMs);
+                                finishDate = new Date();
+                                finishDate.setDate(now.getDate());
+                                finishDate.setHours(0, 0, 0, 0);
+                                finishDate.setTime(finishDate.getTime() + toOffsetMs - 1000);
+                            }
                         }
                         else {
-                            // 負偏移：從今天的負偏移時間開始，到明天的負偏移時間結束
-                            // 例如：-30分鐘 -> 今天 23:30 到明天 23:29:59
-                            beginDate = new Date();
-                            beginDate.setHours(0, 0, 0, 0);
-                            beginDate.setTime(beginDate.getTime() + toOffsetMs);
-                            finishDate = new Date();
-                            finishDate.setDate(now.getDate() + 1);
-                            finishDate.setHours(0, 0, 0, 0);
-                            finishDate.setTime(finishDate.getTime() + toOffsetMs - 1000);
+                            // 負偏移：類似邏輯但方向相反
+                            var currentTimeMs = now.getHours() * 60 * 60 * 1000 +
+                                now.getMinutes() * 60 * 1000 +
+                                now.getSeconds() * 1000;
+                            var dayMs = 24 * 60 * 60 * 1000;
+                            var effectiveOffsetMs = dayMs + toOffsetMs; // 負偏移轉為正值
+                            if (currentTimeMs >= effectiveOffsetMs) {
+                                // 今天的業務日
+                                beginDate = new Date();
+                                beginDate.setDate(now.getDate());
+                                beginDate.setHours(0, 0, 0, 0);
+                                beginDate.setTime(beginDate.getTime() + toOffsetMs);
+                                finishDate = new Date();
+                                finishDate.setDate(now.getDate() + 1);
+                                finishDate.setHours(0, 0, 0, 0);
+                                finishDate.setTime(finishDate.getTime() + toOffsetMs - 1000);
+                            }
+                            else {
+                                // 昨天的業務日
+                                beginDate = new Date();
+                                beginDate.setDate(now.getDate() - 1);
+                                beginDate.setHours(0, 0, 0, 0);
+                                beginDate.setTime(beginDate.getTime() + toOffsetMs);
+                                finishDate = new Date();
+                                finishDate.setDate(now.getDate());
+                                finishDate.setHours(0, 0, 0, 0);
+                                finishDate.setTime(finishDate.getTime() + toOffsetMs - 1000);
+                            }
                         }
                         // 如果還有 dayFromShift，進一步調整開始時間
                         if (fromOffsetMs !== 0) {
