@@ -731,81 +731,66 @@ export class commonSwitchPanelCtrl extends MetricsPanelCtrl {
       }
     }
     
-    // 如果有 dayToShift 偏移，使用跨日邏輯
-    if (toOffsetMs !== 0) {
+    // 如果有任何偏移設定，使用跨日邏輯
+    if (fromOffsetMs !== 0 || toOffsetMs !== 0) {
       const now = new Date();
       let beginDate, finishDate;
       
-      if (toOffsetMs > 0) {
-        // 正偏移：需要判斷當前時間屬於哪個業務日
+      // 判斷當前時間屬於哪個業務日（主要基於 toOffsetMs）
+      if (toOffsetMs !== 0) {
         const currentTimeMs = now.getHours() * 60 * 60 * 1000 + 
                             now.getMinutes() * 60 * 1000 + 
                             now.getSeconds() * 1000;
         
-        if (currentTimeMs >= toOffsetMs) {
-          // 當前時間 >= 偏移時間，屬於今天的業務日
-          // 例如：10:00:45 >= 08:00:00，所以是今天的業務日
-          // 範圍：今天 08:00:00 到明天 07:59:59
-          beginDate = new Date();
-          beginDate.setDate(now.getDate());
-          beginDate.setHours(0, 0, 0, 0);
-          beginDate.setTime(beginDate.getTime() + toOffsetMs);
-          
-          finishDate = new Date();
-          finishDate.setDate(now.getDate() + 1);
-          finishDate.setHours(0, 0, 0, 0);
-          finishDate.setTime(finishDate.getTime() + toOffsetMs - 1000);
+        if (toOffsetMs > 0) {
+          if (currentTimeMs >= toOffsetMs) {
+            // 當前時間 >= 偏移時間，屬於今天的業務日
+            // 基準：今天 00:00:00 到明天 00:00:00
+            beginDate = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 0, 0, 0, 0);
+            finishDate = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1, 0, 0, 0, 0);
+          } else {
+            // 當前時間 < 偏移時間，屬於昨天的業務日
+            // 基準：昨天 00:00:00 到今天 00:00:00
+            beginDate = new Date(now.getFullYear(), now.getMonth(), now.getDate() - 1, 0, 0, 0, 0);
+            finishDate = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 0, 0, 0, 0);
+          }
         } else {
-          // 當前時間 < 偏移時間，還屬於昨天的業務日
-          // 例如：06:00:00 < 08:00:00，所以還是昨天的業務日
-          // 範圍：昨天 08:00:00 到今天 07:59:59
-          beginDate = new Date();
-          beginDate.setDate(now.getDate() - 1);
-          beginDate.setHours(0, 0, 0, 0);
-          beginDate.setTime(beginDate.getTime() + toOffsetMs);
+          // 負偏移邏輯
+          const dayMs = 24 * 60 * 60 * 1000;
+          const effectiveOffsetMs = dayMs + toOffsetMs;
           
-          finishDate = new Date();
-          finishDate.setDate(now.getDate());
-          finishDate.setHours(0, 0, 0, 0);
-          finishDate.setTime(finishDate.getTime() + toOffsetMs - 1000);
+          if (currentTimeMs >= effectiveOffsetMs) {
+            beginDate = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 0, 0, 0, 0);
+            finishDate = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1, 0, 0, 0, 0);
+          } else {
+            beginDate = new Date(now.getFullYear(), now.getMonth(), now.getDate() - 1, 0, 0, 0, 0);
+            finishDate = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 0, 0, 0, 0);
+          }
         }
       } else {
-        // 負偏移：類似邏輯但方向相反
-        const currentTimeMs = now.getHours() * 60 * 60 * 1000 + 
-                            now.getMinutes() * 60 * 1000 + 
-                            now.getSeconds() * 1000;
-        const dayMs = 24 * 60 * 60 * 1000;
-        const effectiveOffsetMs = dayMs + toOffsetMs; // 負偏移轉為正值
-        
-        if (currentTimeMs >= effectiveOffsetMs) {
-          // 今天的業務日
-          beginDate = new Date();
-          beginDate.setDate(now.getDate());
-          beginDate.setHours(0, 0, 0, 0);
-          beginDate.setTime(beginDate.getTime() + toOffsetMs);
-          
-          finishDate = new Date();
-          finishDate.setDate(now.getDate() + 1);
-          finishDate.setHours(0, 0, 0, 0);
-          finishDate.setTime(finishDate.getTime() + toOffsetMs - 1000);
-        } else {
-          // 昨天的業務日
-          beginDate = new Date();
-          beginDate.setDate(now.getDate() - 1);
-          beginDate.setHours(0, 0, 0, 0);
-          beginDate.setTime(beginDate.getTime() + toOffsetMs);
-          
-          finishDate = new Date();
-          finishDate.setDate(now.getDate());
-          finishDate.setHours(0, 0, 0, 0);
-          finishDate.setTime(finishDate.getTime() + toOffsetMs - 1000);
-        }
+        // 只有 fromOffsetMs，沒有 toOffsetMs
+        // 使用當天作為基準
+        beginDate = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 0, 0, 0, 0);
+        finishDate = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1, 0, 0, 0, 0);
       }
       
-      // 如果還有 dayFromShift，進一步調整開始時間
+      // 分別應用偏移
+      // beginDate 使用 fromOffsetMs 調整
       if (fromOffsetMs !== 0) {
-        beginDate.setTime(beginDate.getTime() + fromOffsetMs);
+        beginDate = new Date(beginDate.getTime() + fromOffsetMs);
+        // console.log('beginDate after fromOffset:', beginDate.toString());
       }
+      
+      // finishDate 使用 toOffsetMs 調整，並減去 1 秒避免重疊
+      if (toOffsetMs !== 0) {
+        finishDate = new Date(finishDate.getTime() + toOffsetMs - 1000);
+        // console.log('finishDate after toOffset:', finishDate.toString());
+      } else {
+        // 如果沒有 toOffsetMs，finishDate 設為當天結束
+        finishDate = new Date(finishDate.getTime() - 1000); // 23:59:59.000
+      }
+      
+      // console.log('Calculated business day range:', beginDate.toString(), finishDate.toString());
       
       if (this.firstload === false) {
         this.timeSrv.setTime({
@@ -814,7 +799,7 @@ export class commonSwitchPanelCtrl extends MetricsPanelCtrl {
         });
       }
     } else {
-      // 沒有 dayToShift 偏移，使用原有的 Grafana 表達式邏輯
+      // 沒有任何偏移，使用原有的 Grafana 表達式邏輯
       if (this.panel.dayToType && this.panel.dayToShift) {
         const type = this.panel.dayToType;
         const data = this.panel.dayToShift;
