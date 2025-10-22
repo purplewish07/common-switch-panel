@@ -4,10 +4,11 @@ module.exports = function(grunt) {
   var pkgJson = require('./package.json');
 
   grunt.loadNpmTasks('grunt-contrib-clean');
-  // grunt.loadNpmTasks("grunt-ts");
-  grunt.loadNpmTasks('grunt-typescript');
+  grunt.loadNpmTasks("grunt-ts");
+  // grunt.loadNpmTasks('grunt-typescript');
   grunt.loadNpmTasks('grunt-contrib-watch');
   grunt.loadNpmTasks('grunt-string-replace');
+  grunt.loadNpmTasks('grunt-babel');
 
   grunt.initConfig({
     clean: ['dist'],
@@ -67,7 +68,7 @@ module.exports = function(grunt) {
         src: ['dist/**/*.ts', '!**/*.d.ts'],
         dest: 'dist',
         options: {
-          module: 'system',
+          module: 'system', 
           target: 'es5',
           rootDir: 'dist/',
           declaration: true,
@@ -75,25 +76,51 @@ module.exports = function(grunt) {
           experimentalDecorators: true,
           sourceMap: true,
           noImplicitAny: false,
+          moduleResolution: 'node',  // 新增這行
+          skipLibCheck: true,        // 新增這行，跳過庫文件檢查
+          skipDefaultLibCheck: true, // 新增這行
+          lib: ['es5', 'es2015', 'dom'], // 新增這行，指定庫
+          removeComments: false  // 新增這行，保留註解
         },
       },
     },
 
-    typescript: {
-      build: {
-        src: ['dist/**/*.ts', '!**/*.d.ts'],
-        dest: 'dist',
-        options: {
-          module: 'system',
-          target: 'es5',
-          rootDir: 'dist/',
-          declaration: true,
-          emitDecoratorMetadata: true,
-          experimentalDecorators: true,
-          sourceMap: true,
-          noImplicitAny: false,
-        },
+    // old
+    // typescript: {
+    //   build: {
+    //     src: ['dist/**/*.ts', '!**/*.d.ts'],
+    //     dest: 'dist',
+    //     options: {
+    //       module: 'system',
+    //       target: 'es5',
+    //       rootDir: 'dist/',
+    //       declaration: true,
+    //       emitDecoratorMetadata: true,
+    //       experimentalDecorators: true,
+    //       sourceMap: true,
+    //       noImplicitAny: false,
+    //     },
+    //   },
+    // },
+
+    // Babel 7.x 配置
+    babel: {
+      options: {
+        presets: ['@babel/preset-env'],
+        plugins: [
+          '@babel/plugin-transform-for-of',
+          // '@babel/plugin-transform-modules-systemjs'
+        ],
+        sourceMap: true
       },
+      dist: {
+        files: [{
+          expand: true,
+          cwd: 'dist',
+          src: ['**/*.js'],
+          dest: 'dist'
+        }]
+      }
     },
 
     'string-replace': {
@@ -142,8 +169,9 @@ module.exports = function(grunt) {
     'copy:dist_js',
     // 'copy:app_core_utils',
     'copy:app_headers',
-    // 'ts:build',
-    'typescript:build',
+    'ts:build',          // 先編譯 TypeScript
+    // 'babel:dist',        // 再用 Babel 處理 ES6+ 語法
+    // 'typescript:build',
     'copy:dist_html',
     'copy:dist_css',
     'copy:dist_img',

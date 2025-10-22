@@ -1,13 +1,24 @@
-System.register(['angular', 'lodash', 'app/core/app_events', 'app/plugins/sdk', './fontsize', './i18n', '@grafana/data', 'app/core/config'], function(exports_1) {
-    var __extends = (this && this.__extends) || function (d, b) {
-        for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-        function __() { this.constructor = d; }
-        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-    };
-    var angular_1, lodash_1, app_events_1, sdk_1, fontsize_1, i18n_1, data_1, config_1;
-    var commonSwitchPanelCtrl;
+System.register(["angular", "lodash", "app/core/app_events", "app/plugins/sdk", "./fontsize", "./i18n", "@grafana/data", "app/core/config"], function (exports_1, context_1) {
+    "use strict";
+    var __extends = (this && this.__extends) || (function () {
+        var extendStatics = function (d, b) {
+            extendStatics = Object.setPrototypeOf ||
+                ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+                function (d, b) { for (var p in b) if (Object.prototype.hasOwnProperty.call(b, p)) d[p] = b[p]; };
+            return extendStatics(d, b);
+        };
+        return function (d, b) {
+            if (typeof b !== "function" && b !== null)
+                throw new TypeError("Class extends value " + String(b) + " is not a constructor or null");
+            extendStatics(d, b);
+            function __() { this.constructor = d; }
+            d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+        };
+    })();
+    var angular_1, lodash_1, app_events_1, sdk_1, fontsize_1, i18n_1, data_1, config_1, commonSwitchPanelCtrl;
+    var __moduleName = context_1 && context_1.id;
     return {
-        setters:[
+        setters: [
             function (angular_1_1) {
                 angular_1 = angular_1_1;
             },
@@ -31,20 +42,20 @@ System.register(['angular', 'lodash', 'app/core/app_events', 'app/plugins/sdk', 
             },
             function (config_1_1) {
                 config_1 = config_1_1;
-            }],
-        execute: function() {
+            }
+        ],
+        execute: function () {
             //import TemplateSrv from 'app/features/templating/template_srv';
             System.import('plugins/advantech-common-switch-panel/css/default.css' + '!css');
             sdk_1.loadPluginCss({
                 dark: 'plugins/advantech-common-switch-panel/css/commondark.css',
                 light: 'plugins/advantech-common-switch-panel/css/commonlight.css',
             });
-            commonSwitchPanelCtrl = (function (_super) {
+            commonSwitchPanelCtrl = /** @class */ (function (_super) {
                 __extends(commonSwitchPanelCtrl, _super);
                 function commonSwitchPanelCtrl($scope, $injector, $window, $timeout) {
-                    var _this = this;
-                    _super.call(this, $scope, $injector);
-                    this.defaults = {
+                    var _this = _super.call(this, $scope, $injector) || this;
+                    _this.defaults = {
                         commonVarName: '',
                         commonVarArray: [],
                         noBeyond: false,
@@ -68,58 +79,58 @@ System.register(['angular', 'lodash', 'app/core/app_events', 'app/plugins/sdk', 
                         dayToShift: 0,
                         commonSwitchVersion: '',
                     };
-                    this.normalVarOption = [];
-                    this.normalVarArrayData = [];
-                    this.queryDateArray = [];
-                    this.modeOptions = ['Default TimeRange', 'Custome TimeRange'];
-                    this.dateModeOptions = ['yyyy/MM', 'yyyy/MM/dd'];
-                    this.timeShiftOption = ['hour', 'minute', 'second'];
-                    this.windowObj = $window;
-                    this.titleFontSizeVWList = fontsize_1.default.defaultValues;
-                    this.commonSwitch = 'commonSwitch';
-                    this.isPc = this.dashboard.meta.isPc;
-                    if (this.dashboard.meta.isPc === undefined) {
-                        this.isPc = true;
+                    _this.normalVarOption = [];
+                    _this.normalVarArrayData = [];
+                    _this.queryDateArray = [];
+                    _this.modeOptions = ['Default TimeRange', 'Custome TimeRange'];
+                    _this.dateModeOptions = ['yyyy/MM', 'yyyy/MM/dd'];
+                    _this.timeShiftOption = ['hour', 'minute', 'second'];
+                    _this.windowObj = $window;
+                    _this.titleFontSizeVWList = fontsize_1.default.defaultValues;
+                    _this.commonSwitch = 'commonSwitch';
+                    _this.isPc = _this.dashboard.meta.isPc;
+                    if (_this.dashboard.meta.isPc === undefined) {
+                        _this.isPc = true;
                     }
-                    var varArray = this.dashboard.templating.list;
-                    lodash_1.default.defaultsDeep(this.panel, this.defaults);
-                    this.showFlag = false;
-                    this.imageStyle = {
+                    var varArray = _this.dashboard.templating.list;
+                    lodash_1.default.defaultsDeep(_this.panel, _this.defaults);
+                    _this.showFlag = false;
+                    _this.imageStyle = {
                         'background-image': 'url(/img/grayPhoto.svg)',
                     };
-                    this.borderStyle = config_1.default.theme.type === 'light' ? {
+                    _this.borderStyle = config_1.default.theme.type === 'light' ? {
                         'border': 'solid 1px #c5c5c5',
                     } : {
                         'border': 'solid 2px #464646',
                     };
-                    this.fontColorStyle = config_1.default.theme.type === 'light' ? {
+                    _this.fontColorStyle = config_1.default.theme.type === 'light' ? {
                         'color': '#323233',
                     } : {
                         'color': '#fff',
                     };
                     /* add time Range component start */
-                    this.timeSrv = this.$scope.ctrl.timeSrv;
-                    this.timeValue = this.timeSrv.timeRange();
-                    this.timeZoneData = this.dashboard.getTimezone();
-                    this.dateMath = this.timeSrv.dateMath();
+                    _this.timeSrv = _this.$scope.ctrl.timeSrv;
+                    _this.timeValue = _this.timeSrv.timeRange();
+                    _this.timeZoneData = _this.dashboard.getTimezone();
+                    _this.dateMath = _this.timeSrv.dateMath();
                     /* add time Range component end */
-                    this.customTimePickerData = {
-                        customTimePickerOption: this.dashboard.timepicker.panelTimePicker,
-                        customRangeHide: this.dashboard.timepicker.customRangeHide,
-                        customRefreshHide: this.dashboard.timepicker.customRefreshHide,
-                        customTimePickerHide: this.dashboard.timepicker.hidden,
+                    _this.customTimePickerData = {
+                        customTimePickerOption: _this.dashboard.timepicker.panelTimePicker,
+                        customRangeHide: _this.dashboard.timepicker.customRangeHide,
+                        customRefreshHide: _this.dashboard.timepicker.customRefreshHide,
+                        customTimePickerHide: _this.dashboard.timepicker.hidden,
                         dashboardTimeRangeFlag: true,
-                        customTimeRangePicker: this.dashboard.timepicker.customTimeRange,
+                        customTimeRangePicker: _this.dashboard.timepicker.customTimeRange,
                     };
                     /* add time Range component end */
                     for (var i = 0; i < varArray.length; i++) {
-                        this.normalVarOption.push({ value: varArray[i].name, text: varArray[i].name });
+                        _this.normalVarOption.push({ value: varArray[i].name, text: varArray[i].name });
                     }
-                    if (this.scope.$$listeners.isWisePaas) {
-                        this.events.on('init-edit-mode', this.onInitEditMode.bind(this));
-                        this.events.on('render', this.onRender.bind(this));
-                        this.events.on('init-panel-actions', this.onInitPanelActions.bind(this));
-                        this.events.on('data-received', this.onDataReceived.bind(this));
+                    if (_this.scope.$$listeners.isWisePaas) {
+                        _this.events.on('init-edit-mode', _this.onInitEditMode.bind(_this));
+                        _this.events.on('render', _this.onRender.bind(_this));
+                        _this.events.on('init-panel-actions', _this.onInitPanelActions.bind(_this));
+                        _this.events.on('data-received', _this.onDataReceived.bind(_this));
                     }
                     app_events_1.default.on("variable-will-remove", function (data) {
                         if (data === _this.panel.id) {
@@ -144,35 +155,36 @@ System.register(['angular', 'lodash', 'app/core/app_events', 'app/plugins/sdk', 
                         }
                         _this.onRender();
                     });
-                    this.titleInvalid = false;
-                    this.renderFlag = false;
+                    _this.titleInvalid = false;
+                    _this.renderFlag = false;
                     /* custome time range */
-                    this.initFun();
-                    if (this.panel.timeMode && this.panel.timeMode === "Default TimeRange") {
-                        this.panel.trueTime = '';
+                    _this.initFun();
+                    if (_this.panel.timeMode && _this.panel.timeMode === "Default TimeRange") {
+                        _this.panel.trueTime = '';
                     }
                     // console.log(this.timeValue.from);
                     // console.log(this.timeValue.from.toISOString().replace(/T.*/g,'').replace(/-/g,'/'));
                     // console.log('construction',this.panel.trueTime);
                     var Today = new Date().toISOString().slice(0, 10);
-                    if (this.timeValue.from.toISOString().slice(0, 10) !== Today) {
-                        this.panel.trueTime = this.timeValue.from.toISOString().slice(0, 10).replace(/-/g, '/');
+                    if (_this.timeValue.from.toISOString().slice(0, 10) !== Today) {
+                        _this.panel.trueTime = _this.timeValue.from.toISOString().slice(0, 10).replace(/-/g, '/');
                     }
                     //console.log(this.panel.trueTime);
                     //console.log(this.panel.commonVarArray);
-                    this.firstload = true;
-                    this.handleYearChanged();
-                    this.tableTypeFlag = false;
-                    this.handleTrueTimeChanged();
-                    this.refreshTimeFlag = false;
-                    this.firstload = false;
-                    var oldVersion = this.panel.commonSwitchVersion;
-                    this.panel.commonSwitchVersion = 1;
-                    if (this.panel.commonSwitchVersion !== oldVersion) {
-                        if (this.panel.commonFontColor && this.panel.commonFontColor === '#ffffff') {
-                            delete this.panel.commonFontColor;
+                    _this.firstload = true;
+                    _this.handleYearChanged();
+                    _this.tableTypeFlag = false;
+                    _this.handleTrueTimeChanged();
+                    _this.refreshTimeFlag = false;
+                    _this.firstload = false;
+                    var oldVersion = _this.panel.commonSwitchVersion;
+                    _this.panel.commonSwitchVersion = 1;
+                    if (_this.panel.commonSwitchVersion !== oldVersion) {
+                        if (_this.panel.commonFontColor && _this.panel.commonFontColor === '#ffffff') {
+                            delete _this.panel.commonFontColor;
                         }
                     }
+                    return _this;
                 }
                 commonSwitchPanelCtrl.prototype.onInitEditMode = function () {
                     this.addEditorTab('Options', 'public/plugins/advantech-common-switch-panel/partials/editor.html', 2);
@@ -570,14 +582,14 @@ System.register(['angular', 'lodash', 'app/core/app_events', 'app/plugins/sdk', 
                 };
                 commonSwitchPanelCtrl.prototype.handleTrueTimeChanged = function () {
                     if (this.panel.trueTime) {
-                        var firstTime, lastTime;
+                        var firstTime = void 0, lastTime = void 0;
                         var trueTime = this.panel.trueTime;
                         var date = new Date();
                         var year = date.getFullYear();
                         var month = date.getMonth() + 1;
                         var day = date.getDate();
                         var timeArr = trueTime.split('/');
-                        var firstDay, lastDay;
+                        var firstDay = void 0, lastDay = void 0;
                         if (this.panel.dateMode === 'yyyy/MM') {
                             if (this.panel.trueTime === 'This Month') {
                                 if (this.firstload === false) {
@@ -595,6 +607,7 @@ System.register(['angular', 'lodash', 'app/core/app_events', 'app/plugins/sdk', 
                                 }
                                 firstDay = firstDay.replace(/\//g, '-');
                                 lastDay = lastDay.replace(/\//g, '-');
+                                // console.log('Final dates:', { firstDay, lastDay });
                             }
                         }
                         else {
@@ -700,7 +713,7 @@ System.register(['angular', 'lodash', 'app/core/app_events', 'app/plugins/sdk', 
                     // 如果有 dayToShift 偏移，使用跨日邏輯
                     if (toOffsetMs !== 0) {
                         var now = new Date();
-                        var beginDate, finishDate;
+                        var beginDate = void 0, finishDate = void 0;
                         if (toOffsetMs > 0) {
                             // 正偏移：需要判斷當前時間屬於哪個業務日
                             var currentTimeMs = now.getHours() * 60 * 60 * 1000 +
@@ -999,6 +1012,8 @@ System.register(['angular', 'lodash', 'app/core/app_events', 'app/plugins/sdk', 
                         var panelElem = document.getElementById('panel-' + id);
                         panelElem.removeAttribute("class");
                         panelCententElem.addClass("mobile-common-switch-overflow-style");
+                        //panelCententElem.attr('style', 'overflow:visible');
+                        //panelCententElem.css('overflow', "visible");
                     }
                     else {
                         panelCententElem.removeClass("mobile-common-switch-overflow-style");
@@ -1029,10 +1044,10 @@ System.register(['angular', 'lodash', 'app/core/app_events', 'app/plugins/sdk', 
                 };
                 commonSwitchPanelCtrl.templateUrl = 'partials/module.html';
                 return commonSwitchPanelCtrl;
-            })(sdk_1.MetricsPanelCtrl);
+            }(sdk_1.MetricsPanelCtrl));
             exports_1("commonSwitchPanelCtrl", commonSwitchPanelCtrl);
             exports_1("PanelCtrl", commonSwitchPanelCtrl);
         }
-    }
+    };
 });
 //# sourceMappingURL=module.js.map

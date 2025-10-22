@@ -1,4 +1,4 @@
-/// <reference path="../node_modules/grafana-sdk-mocks/app/headers/common.d.ts" />
+/// <reference types="grafana-sdk-mocks/app/headers/common" />
 import { MetricsPanelCtrl } from 'app/plugins/sdk';
 export declare class commonSwitchPanelCtrl extends MetricsPanelCtrl {
     static templateUrl: string;

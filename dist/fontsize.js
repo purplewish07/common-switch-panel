@@ -1,8 +1,10 @@
-System.register([], function(exports_1) {
+System.register([], function (exports_1, context_1) {
+    "use strict";
     var fontSize;
+    var __moduleName = context_1 && context_1.id;
     return {
-        setters:[],
-        execute: function() {
+        setters: [],
+        execute: function () {
             fontSize = {};
             fontSize.defaultValues = [
                 {
@@ -207,8 +209,8 @@ System.register([], function(exports_1) {
                 });
                 return r;
             };
-            exports_1("default",fontSize);
+            exports_1("default", fontSize);
         }
-    }
+    };
 });
 //# sourceMappingURL=fontsize.js.map

@@ -1,8 +1,10 @@
-System.register([], function(exports_1) {
+System.register([], function (exports_1, context_1) {
+    "use strict";
     var isEffective, isObject, isObjectOrArray, setI18n, getI18n, initI18n, initAttrI18n, initAttrArrayI18n;
+    var __moduleName = context_1 && context_1.id;
     return {
-        setters:[],
-        execute: function() {
+        setters: [],
+        execute: function () {
             isEffective = function (target) {
                 return target !== undefined && target !== null;
             };
@@ -30,6 +32,7 @@ System.register([], function(exports_1) {
                     obj.i18n[lang][label] = value;
                 }
             };
+            exports_1("setI18n", setI18n);
             /**
              * 获取panel多语言文本
              * @param obj : {}, 字段所属对象
@@ -46,6 +49,7 @@ System.register([], function(exports_1) {
                 }
                 return isEffective(obj[label]) ? obj[label] : '';
             };
+            exports_1("getI18n", getI18n);
             /**
              * 初始化所有国际化字段
              * @param obj : {}, 字段所属根对象，一般传this.panel
@@ -77,6 +81,7 @@ System.register([], function(exports_1) {
                     }
                 }
             };
+            exports_1("initI18n", initI18n);
             /**
              * 初始化时判断字段如果未经国际化，则生成对应的国际化数据
              * @param obj 字段所属对象
@@ -103,6 +108,7 @@ System.register([], function(exports_1) {
                     }
                 }
             };
+            exports_1("initAttrI18n", initAttrI18n);
             initAttrArrayI18n = function (obj, labels, lang) {
                 if (Array.isArray(labels)) {
                     labels.forEach(function (label) {
@@ -110,12 +116,8 @@ System.register([], function(exports_1) {
                     });
                 }
             };
-            exports_1("setI18n", setI18n);
-            exports_1("getI18n", getI18n);
-            exports_1("initI18n", initI18n);
-            exports_1("initAttrI18n", initAttrI18n);
             exports_1("initAttrArrayI18n", initAttrArrayI18n);
         }
-    }
+    };
 });
 //# sourceMappingURL=i18n.js.map
