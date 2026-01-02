@@ -613,6 +613,7 @@ System.register(["angular", "lodash", "app/core/app_events", "app/plugins/sdk", 
                         else {
                             if (this.panel.trueTime === 'Today') {
                                 this.todayFun();
+                                this.timeSrv.setAutoRefresh(this.timeSrv.refresh);
                                 return;
                             }
                             else {
@@ -663,6 +664,11 @@ System.register(["angular", "lodash", "app/core/app_events", "app/plugins/sdk", 
                                 from: data_1.default.toUtc(firstTime),
                                 to: data_1.default.toUtc(lastTime)
                             });
+                            // Enable auto refresh if current time is between firstTime and lastTime
+                            var now = Date.now();
+                            if (now >= firstTime && now <= lastTime) {
+                                this.timeSrv.setAutoRefresh(this.timeSrv.refresh);
+                            }
                         }
                     }
                 };

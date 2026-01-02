@@ -636,6 +636,7 @@ export class commonSwitchPanelCtrl extends MetricsPanelCtrl {
       } else {
         if (this.panel.trueTime === 'Today') {
           this.todayFun();
+          this.timeSrv.setAutoRefresh(this.timeSrv.refresh);
           return;
         } else {
           // Fix setTime bug by Shaun. 2022/06/14
@@ -681,6 +682,11 @@ export class commonSwitchPanelCtrl extends MetricsPanelCtrl {
           from: grafanaData.toUtc(firstTime),
           to: grafanaData.toUtc(lastTime)
         });
+        // Enable auto refresh if current time is between firstTime and lastTime
+        const now = Date.now();
+        if (now >= firstTime && now <= lastTime) {
+          this.timeSrv.setAutoRefresh(this.timeSrv.refresh);
+        }
       }
     }
   }
