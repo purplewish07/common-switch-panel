@@ -36,6 +36,8 @@
     "load-grunt-tasks": "^5.1.0"
   },
   "resolutions": {
+    "immutable": "3.8.3",
+    "minimatch": "3.1.4",
     "braces": "^3.0.3",
     "micromatch": "^4.0.8",
     "xml2js": "^0.5.0",
@@ -48,6 +50,8 @@
     "qs": "^6.15.0"
   },
   "overrides": {
+    "immutable": "3.8.3",
+    "minimatch": "3.1.4",
     "braces": "^3.0.3",
     "micromatch": "^4.0.8",
     "xml2js": "^0.5.0",
