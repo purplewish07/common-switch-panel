@@ -23,7 +23,7 @@
   "devDependencies": {
     "@grafana/data": "^6.4.5",
     "@grafana/ui": "^6.4.5",
-    "@babel/core": "^7.23.3",
+    "@babel/core": "^7.29.6",
     "@babel/traverse": "^7.23.2",
     "grafana-sdk-mocks": "github:grafana/grafana-sdk-mocks",
     "grunt": "^1.6.1",
